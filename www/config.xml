@@ -14,12 +14,18 @@
   <preference name="ios-statusbarstyle" value="black-opaque"/>
   <preference name="detect-data-types" value="true"/>
   <preference name="exit-on-suspend" value="false"/>
-  <preference name="show-splash-screen-spinner" value="true"/>
-  <preference name="auto-hide-splash-screen" value="false"/>
-  <preference name="splashScreenDelay" value="10000"/>
   <preference name="disable-cursor" value="false"/>
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="android-installLocation" value="auto"/>
+  
+  <preference name="SplashScreen" value="splash"/>
+  <preference name="ShowSplashScreen" value="true"/>
+  <preference name="SplashScreenDelay" value="1000" />
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="FadeSplashScreen" value="false"/>
+  <!-- FCUASUCSAKCAKSC -->
+  <preference name="show-splash-screen-spinner" value="true"/>
+  <preference name="auto-hide-splash-screen" value="false"/>
   
   <!--<gap:plugin name="org.apache.cordova.battery-status"/>
   <gap:plugin name="org.apache.cordova.camera"/>
