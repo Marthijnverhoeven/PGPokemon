@@ -34,5 +34,8 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log('We started the war!');
+        // $.get('http://pokeapi.co/api/v2/pokemon', function(data) {
+        //     console.log(data);
+        // });
     }
 };
