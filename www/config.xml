@@ -20,7 +20,7 @@
   
   <preference name="SplashScreen" value="splash"/>
   <preference name="ShowSplashScreen" value="true"/>
-  <preference name="SplashScreenDelay" value="1000" />
+  <preference name="SplashScreenDelay" value="1000000" />
   <preference name="AutoHideSplashScreen" value="false" />
   <preference name="FadeSplashScreen" value="false"/>
   <!-- FCUASUCSAKCAKSC -->
