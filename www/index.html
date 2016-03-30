@@ -27,7 +27,7 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
@@ -38,42 +38,69 @@
     </head>
     <body>
         <div data-role="page" id="main">
-            <div data-role="header" class="ui-header ui-bar-a">
-                <h1>Header title</h1>
+            <div data-role="header" class="ui-bar ui-bar-a" data-position="fixed">
+				<h1>Header Title</h1>
             </div>
             
-            <div data-role="main" class="ui-content ui-content-a">
-                <h2>Content title</h2>
-                <a href="#samples" class="ui-btn ui-corner-all" data-transition="slide">To #samples</a>
-                <a href="./sample.html" class="ui-btn ui-corner-all" data-transition="slide">To samples.html</a>
+            <div data-role="main">
+				<div data-role="tabs">
+					<div data-role="navbar" class="ui-bar ui-bar-a" data-position="fixed">
+						<ul>
+							<li><a href="#pokedex" class="ui-btn-active" data-ajax="false">Pokédex</a></li>
+							<li><a href="#mypokemon" data-ajax="false">Rugzak</a></li>
+							<li><a href="#nearby" data-ajax="false">Vlakbij</a></li>
+						</ul>
+					</div>
+					<div id="pokedex" class="ui-body ui-body-a">
+						<ul data-role="listview" data-inset="true">
+							<li><a href="./views/pokedetails.html?id=1">Bulbasaur</a></li>
+							<li><a href="./views/pokedetails.html?id=2">Venusaur</a></li>
+							<li><a href="./views/pokedetails.html?id=3">Grotere saur</a></li>
+							<li><a href="./views/pokedetails.html?id=4">Squirtle</a></li>
+							<li><a href="./views/pokedetails.html?id=5">War turtle</a></li>
+							<li><a href="./views/pokedetails.html?id=6">Blastoise</a></li>
+							<li><a href="./views/pokedetails.html?id=7">Charred Mander</a></li>
+							<li><a href="./views/pokedetails.html?id=8">RedMander(?)</a></li>
+							<li><a href="./views/pokedetails.html?id=9">caterpie</a></li>
+							<li><a href="./views/pokedetails.html?id=10">metapod</a></li>
+							<li><a href="./views/pokedetails.html?id=11">butterfree</a></li>
+							<li><a href="./views/pokedetails.html?id=12">weedle</a></li>
+							<li><a href="./views/pokedetails.html?id=13">kakuna</a></li>
+							<li><a href="./views/pokedetails.html?id=14">beedrill</a></li>
+							<li><a href="./views/pokedetails.html?id=15">pidgey</a></li>
+							<li><a href="./views/pokedetails.html?id=16">pidgeotto</a></li>
+							<li><a href="./views/pokedetails.html?id=17">pidgeot</a></li>
+						</ul>
+					</div>
+					<div id="mypokemon" class="ui-body ui-body-a">
+						<ul data-role="listview" data-inset="true">
+							<li><a href="#">Suicune</a></li>
+							<li><a href="#">Raikou</a></li>
+							<li><a href="#">Entei</a></li>
+							<li><a href="#">Ho-Oh</a></li>
+							<li><a href="#">Arceus</a></li>
+						</ul>
+					</div>
+					<div id="nearby" class="ui-body ui-body-a">
+						<p>
+							Yo, deze is niet geïmplementeerd
+							<a href="./views/sample.html" class="ui-btn ui-corner-all" data-transition="slide">To samples.html</a>
+							<a href="./views/pokedetails.html?id=1" class="ui-btn ui-corner-all" data-transition="slide">To pokedetails.html</a>
+						</p>
+					</div>
+				</div>	
             </div>
             
-            <div data-role="footer" class="ui-footer">
-                <a class="ui-btn ui-btn-inline ui-corner-all ui-icon-arrow-u ui-btn-icon-left ui-btn-icon-notext ctd-top">Top</a>
-                <h2>Footer title</h2>
-            </div>
-        </div>
-        
-        <div data-role="page" id="samples">
-            <div data-role="header" class="ui-header ui-bar-a">
-                <a href="./index.html" class="ui-btn ui-btn-inline ui-corner-all ui-icon-back ui-btn-icon-left" data-direction="reverse" data-transition="slide">back</a>
-                <h1>#sample</h1>
-            </div>
-            
-            <div data-role="main" class="ui-content ui-content-a">
-                <h2>Content title</h2>
-            </div>
-            
-            <div data-role="footer" class="ui-footer">
-                <a class="ui-btn ui-btn-inline ui-corner-all ui-icon-arrow-u ui-btn-icon-left ui-btn-icon-notext ctd-top">Top</a>
-                <h2>Footer</h2>
+            <div data-role="footer" class="ui-bar ui-bar-a" data-id="pokefoot">
+                <a class="ui-btn ui-btn-inline ui-corner-all ui-icon-arrow-u ui-btn-icon-left" id="to-top">Top</a>
             </div>
         </div>
         
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/pokedex.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
-            app.initialize();
+			app.initialize();
         </script>
     </body>
 </html>

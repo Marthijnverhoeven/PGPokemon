@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+	<head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+        <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" href="css/themes/Creed.css" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <title>Pokedex 4 Aliens</title>
+    </head>
+    <body>
+		<div data-role="page" id="poke-details">
+			<div data-role="header" class="ui-bar ui-bar-a">
+				<a href="../index.html" class="ui-btn ui-btn-inline ui-corner-all ui-icon-back ui-btn-icon-left" data-direction="reverse" data-transition="slide">back</a>
+				<h1>Details</h1>
+			</div>
+			
+			<div data-role="main" class="ui-content ui-content-a">
+				<h2>{pokemon naam}</h2>
+				<img class="poke-image" src="../img/pokemon-1.png">
+				{pokemon details}
+			</div>
+			
+			<div data-role="footer" class="ui-bar ui-bar-a" data-id="pokefoot">
+				<a class="ui-btn ui-btn-inline ui-corner-all ui-icon-arrow-u ui-btn-icon-left" id="to-top">Top</a>
+			</div>
+		</div>
+	</body>
+</html>
