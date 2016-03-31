@@ -52,24 +52,7 @@
 						</ul>
 					</div>
 					<div id="pokedex" class="ui-body ui-body-a">
-						<ul data-role="listview" data-inset="true">
-							<li><a href="./views/pokedetails.html?id=1">Bulbasaur</a></li>
-							<li><a href="./views/pokedetails.html?id=2">Venusaur</a></li>
-							<li><a href="./views/pokedetails.html?id=3">Grotere saur</a></li>
-							<li><a href="./views/pokedetails.html?id=4">Squirtle</a></li>
-							<li><a href="./views/pokedetails.html?id=5">War turtle</a></li>
-							<li><a href="./views/pokedetails.html?id=6">Blastoise</a></li>
-							<li><a href="./views/pokedetails.html?id=7">Charred Mander</a></li>
-							<li><a href="./views/pokedetails.html?id=8">RedMander(?)</a></li>
-							<li><a href="./views/pokedetails.html?id=9">caterpie</a></li>
-							<li><a href="./views/pokedetails.html?id=10">metapod</a></li>
-							<li><a href="./views/pokedetails.html?id=11">butterfree</a></li>
-							<li><a href="./views/pokedetails.html?id=12">weedle</a></li>
-							<li><a href="./views/pokedetails.html?id=13">kakuna</a></li>
-							<li><a href="./views/pokedetails.html?id=14">beedrill</a></li>
-							<li><a href="./views/pokedetails.html?id=15">pidgey</a></li>
-							<li><a href="./views/pokedetails.html?id=16">pidgeotto</a></li>
-							<li><a href="./views/pokedetails.html?id=17">pidgeot</a></li>
+						<ul data-role="listview" data-inset="true" id="pokedex-container">
 						</ul>
 					</div>
 					<div id="mypokemon" class="ui-body ui-body-a">
@@ -97,7 +80,9 @@
         </div>
         
         <script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="js/pokedex.js"></script>
+		<script type="text/javascript" src="js/PokeDetailView.js"></script>
+		<script type="text/javascript" src="js/PokeListView.js"></script>
+		<script type="text/javascript" src="js/Pokedex.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
 			app.initialize();

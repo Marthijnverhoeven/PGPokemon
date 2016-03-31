@@ -39,14 +39,11 @@
     <body>
 		<div data-role="page" id="poke-details">
 			<div data-role="header" class="ui-bar ui-bar-a">
-				<a href="../index.html" class="ui-btn ui-btn-inline ui-corner-all ui-icon-back ui-btn-icon-left" data-direction="reverse" data-transition="slide">back</a>
+				<a href="../index.html" class="ui-btn ui-btn-inline ui-corner-all ui-icon-back ui-btn-icon-left" data-direction="reverse" data-rel="back" data-transition="slide">back</a>
 				<h1>Details</h1>
 			</div>
 			
-			<div data-role="main" class="ui-content ui-content-a">
-				<h2>{pokemon naam}</h2>
-				<img class="poke-image" src="../img/pokemon-1.png">
-				{pokemon details}
+			<div data-role="main" class="ui-content ui-content-a" id="pokemon-container">
 			</div>
 			
 			<div data-role="footer" class="ui-bar ui-bar-a" data-id="pokefoot">

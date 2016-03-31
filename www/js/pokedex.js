@@ -28,21 +28,29 @@ var Pokedex = function(configuration, ajaxClient) {
 		},	
 	};
 	this.pokemon = {
-		read: function(options, succes, error) {
+		read: function(options, success, error) {
 			var params = {
 				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.read}${helper.parameterizeQueryOptions(options)}`,
-				succes: succes,
+				success: success,
 				error: error
 			};
 			ajaxClient(helper.getAjaxParams(params));
 		},
-		readById: function(id, succes, error) {
+		readById: function(id, success, error) {
 			var params = {
 				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`,
-				succes: succes,
+				success: success,
 				error: error
 			};
-			ajaxClient(getAjaxParams(params));
+			ajaxClient(helper.getAjaxParams(params));
+		},
+		readByUrl: function(url, success, error) {
+			var params = {
+				url: url,
+				success: success,
+				error: error
+			}
+			ajaxClient(helper.getAjaxParams(params));
 		}
 	}
 };
