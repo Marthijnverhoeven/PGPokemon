@@ -6,49 +6,63 @@
 // 	- pagecontainerbeforeload
 // 	- pagecontainershow
 var Router = function() {
+	var self = this;
+	var count = 0;
 	var routeHelper = {
-		getTargetPathArray: function(evt) {
+		getTargetPathname: function(ui) { // Gives access to target page after navigation
+			var urlObject = $.mobile.path.parseUrl(ui.absUrl);
+			return !!urlObject.pathname
+					? urlObject.pathname
+					: ['/index.html'];
+		},
+		getCurrentPathname: function(evt) { // gives access to current page
 			var urlObject = $.mobile.path.parseUrl(evt.currentTarget.URL);
 			return !!urlObject.pathname
-					? urlObject.pathname.split('/')
-					: ['index.html'];
+					? urlObject.pathname
+					: ['/index.html'];
 		},
-		getCurrentPathArray: function(evt) {
-			$.mobile.path.parseUrl("http://jblas:password@mycompany.com:8080/mail/dota/mota/inbox.html?msg=1234&type=unread#msg-content");
+		getCurrentObjectPath: function(evt) {
+			return routeHelper.getObjectPath(routeHelper.getCurrentPathname(evt));
 		},
-		openNextLevel: function(obj, pathArray, index) {
-			if(index >= pathArray.length) {
-				throw new Error('Routing failed, index is larger than pathArray.');
-			}
-			if(index == (pathArray.length-1)) {
-				// index is last item in pathArray, thus file
-				return obj[pathArray[index]];
-			}
-			else {
-				// index is not the last item in pathArray, thus directory
-				self.openNextLevel(obj, pathArray, index++);
-			}
+		getTargetObjectPath: function(ui) {
+			return routeHelper.getObjectPath(routeHelper.getTargetPathname(ui));
+		},
+		getObjectPath: function(pathname) {
+			var path = pathname.split('.')[0]
+			return path === '/'
+				? '/index'
+				: path;
 		}
 	};
 	this.onSwipeLeftHandler = function(callbacks) {
-		console.log('swipeleft-event fired.');
+		console.log('swipeleft-handler added.');
 		return function(evt) {
-			var pageCallback = routeHelper.openNextLevel(callbacks, routeHelper.getTargetPathArray(evt), 0);
-			pageCallback(evt);
+			console.log('swipeleft-event fired.');
+			var objectPath = routeHelper.getCurrentObjectPath(evt);
+			console.log(objectPath);
+			if(callbacks[objectPath]) {
+				callbacks[objectPath](evt)
+			}
 		}
 	}
-	this.onPCBeforeLoadHandler = function() {
-		console.log('pagecontainerbeforeload-event fired.');
+	this.onPCBeforeLoadHandler = function(callbacks) {
+		console.log('pagecontainerbeforeload-handler added.');
 		return function(evt, ui) {
-			var pageCallback = routeHelper.openNextLevel(callbacks, routeHelper.getTargetPathArray(evt), 0);
-			pageCallback(evt);
+			console.log('pagecontainerbeforeload-event fired.');
+			var objectPath = routeHelper.getTargetObjectPath(ui);
+			if(callbacks[objectPath]) {
+				callbacks[objectPath](evt, ui)
+			}
 		};
 	}
-	this.onPCShowHandler = function() {
-		console.log('pagecontainershow-event fired.');
+	this.onPCShowHandler = function(callbacks) {
+		console.log('pagecontainershow-handler added.');
 		return function(evt, ui) {
-			var pageCallback = routeHelper.openNextLevel(callbacks, routeHelper.getCurrentPathArray(ui), 0);
-			pageCallback(evt);
+			console.log('pagecontainershow-event fired.');
+			var objectPath = routeHelper.getCurrentObjectPath(evt);
+			if(callbacks[objectPath]) {
+				callbacks[objectPath](evt, ui)
+			}
 		};
 	}
 }

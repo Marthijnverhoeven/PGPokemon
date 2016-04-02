@@ -1,4 +1,4 @@
-var CacheManager = function() {
+var CacheManager = function(config) {
 	var self = this;
 	this.config = config || {
 		themeStylesheetSelector: '#theme-stylesheet',

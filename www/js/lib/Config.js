@@ -33,5 +33,19 @@ var config = {
 			Creed: '/css/themes/Creed.css'
 		},
 		storage: localStorage
-	}
+	},
+	containerSelectors: {
+		pokedexlistContainer: '#pokedex-container',
+		pokedexdetailContainerSelector: '#pokemon-container',
+		settingsContainerSelector: '#settings-container'
+	},
+	plugins: {
+		geolocation: (function(){ 
+			if(navigator.geolocation){
+				return navigator.geolocation;
+			}
+			throw new Error('OMG NO GEOLOCATION!');
+		}())
+	},
+	storage: localStorage
 };

@@ -5,9 +5,7 @@ var PokeApi = function(configuration, ajaxClient) {
 			return {
 				type: "GET",
 				url: `${params.url}`,
-				dataType: "json",
-				success: params.success,
-				error: params.error
+				dataType: "json"
 			};
 		},
 		parameterizeQueryOptions: function(queryOptions) {
@@ -27,34 +25,28 @@ var PokeApi = function(configuration, ajaxClient) {
 			}
 		}	
 	};
-	this.ajaxClient = ajaxClient || function(ajaxOptions) {
-		console.log('ajax called');
-		console.log(ajaxOptions);
-	};
+	this.ajaxClient = ajaxClient;
 	this.pokemon = {
-		read: function(options, success, error) {
+		// Returns a promise to retrieve all pokemon.
+		read: function(options) {
 			var params = {
 				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.read}${helper.parameterizeQueryOptions(options)}`,
-				success: success,
-				error: error
 			};
-			self.ajaxClient(helper.getAjaxParams(params));
+			return self.ajaxClient(helper.getAjaxParams(params));
 		},
-		readById: function(id, success, error) {
+		// Returns a promise to retrieve a pokemon by id.
+		readById: function(id) {
 			var params = {
-				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`,
-				success: success,
-				error: error
+				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`
 			};
-			self.ajaxClient(helper.getAjaxParams(params));
+			return self.ajaxClient(helper.getAjaxParams(params));
 		},
-		readByUrl: function(url, success, error) {
+		// Returns a promise to retrieve a pokemon by url.
+		readByUrl: function(url) {
 			var params = {
-				url: url,
-				success: success,
-				error: error
+				url: url
 			}
-			self.ajaxClient(helper.getAjaxParams(params));
+			return self.ajaxClient(helper.getAjaxParams(params));
 		}
 	}
 };

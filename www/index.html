@@ -82,12 +82,14 @@
         
         <script type="text/javascript" src="cordova.js"></script>
 		<!-- js/lib -->
+		<script type="text/javascript" src="js/lib/config.js"></script>
 		<script type="text/javascript" src="js/lib/PGPokemon.js"></script>
 		<!-- js/lib/module -->
 		<script type="text/javascript" src="js/lib/module/CacheManager.js"></script>
 		<script type="text/javascript" src="js/lib/module/Geolocation.js"></script>
 		<script type="text/javascript" src="js/lib/module/PokeApi.js"></script>
 		<script type="text/javascript" src="js/lib/module/PokemonDatabase.js"></script>
+		<script type="text/javascript" src="js/lib/module/PokemonRepository.js"></script>
 		<script type="text/javascript" src="js/lib/module/Router.js"></script>
 		<script type="text/javascript" src="js/lib/module/ThemeManager.js"></script>
 		<!-- js/view -->
@@ -95,9 +97,11 @@
 		<script type="text/javascript" src="js/view/PokeDetailView.js"></script>
 		<script type="text/javascript" src="js/view/SettingsView.js"></script>
 		<!-- js/ -->
-		<script type="text/javascript" src="js/index.js"></script>
+		<!--<script type="text/javascript" src="js/index.js"></script>-->
         <script type="text/javascript">
-			app.initialize();
+			// app.initialize(); // index.js
+			var app = new Application(config);
+			document.addEventListener('deviceready', app.onDeviceReady, false);
         </script>
     </body>
 </html>

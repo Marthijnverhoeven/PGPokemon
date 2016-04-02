@@ -14,19 +14,17 @@ var PokeDetailView = function(containerSelector) {
 		}
 	};
 	this.containerSelector = containerSelector;
-	this.config = {
-	};
 	this.setError = function(errorMessage, cb) {
-		$(self.containerSelector).empty();
-		$(self.containerSelector).append(helper.createErrorNode({ message: errorMessage }));
+		var container = $(self.containerSelector);
+		container.empty();
+		container.append(helper.createErrorNode({ message: errorMessage }));
 		if(cb) { cb(); }
 	};
 	this.setPokemon = function(pokemon, cb) {
-		console.log('pokedetailview.setpokemon');
-		console.log($(self.containerSelector));
-		$(self.containerSelector).empty();
+		var container = $(self.containerSelector);
+		container.empty();
 		var node = helper.createPokemonNode(pokemon);
-		$(self.containerSelector).append(node);
+		container.append(node);
 		if(cb) { cb(); }
 	};
 }

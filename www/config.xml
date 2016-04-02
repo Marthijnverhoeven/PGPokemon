@@ -22,6 +22,7 @@
 	<preference name="android-installLocation" value="auto"/>
 
 	<plugin name="org.apache.cordova.splashscreen"/>
+	<plugin name="org.apache.cordova.geolocation"/>
 
 	<preference name="SplashScreen" value="splash"/>
 	<preference name="ShowSplashScreen" value="true"/>
