@@ -11,15 +11,15 @@ var Router = function() {
 	var routeHelper = {
 		getTargetPathname: function(ui) { // Gives access to target page after navigation
 			var urlObject = $.mobile.path.parseUrl(ui.absUrl);
-			return !!urlObject.pathname
-					? urlObject.pathname
-					: ['/index.html'];
+			return !!urlObject.filename
+					? urlObject.filename
+					: ['index.html'];
 		},
 		getCurrentPathname: function(evt) { // gives access to current page
 			var urlObject = $.mobile.path.parseUrl(evt.currentTarget.URL);
-			return !!urlObject.pathname
-					? urlObject.pathname
-					: ['/index.html'];
+			return !!urlObject.filename
+					? urlObject.filename
+					: ['index.html'];
 		},
 		getCurrentObjectPath: function(evt) {
 			return routeHelper.getObjectPath(routeHelper.getCurrentPathname(evt));
@@ -28,10 +28,7 @@ var Router = function() {
 			return routeHelper.getObjectPath(routeHelper.getTargetPathname(ui));
 		},
 		getObjectPath: function(pathname) {
-			var path = pathname.split('.')[0]
-			return path === '/'
-				? '/index'
-				: path;
+			return pathname.split('.')[0];
 		}
 	};
 	this.onSwipeLeftHandler = function(callbacks) {
