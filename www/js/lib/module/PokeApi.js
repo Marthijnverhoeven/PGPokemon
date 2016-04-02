@@ -1,4 +1,4 @@
-var Pokedex = function(configuration, ajaxClient) {
+var PokeApi = function(configuration, ajaxClient) {
 	var self = this;
 	var helper = {
 		getAjaxParams: function(params) {
@@ -25,7 +25,11 @@ var Pokedex = function(configuration, ajaxClient) {
 				read: "pokemon",
 				readById: "pokemon/"
 			}
-		},	
+		}	
+	};
+	this.ajaxClient = ajaxClient || function(ajaxOptions) {
+		console.log('ajax called');
+		console.log(ajaxOptions);
 	};
 	this.pokemon = {
 		read: function(options, success, error) {
@@ -34,7 +38,7 @@ var Pokedex = function(configuration, ajaxClient) {
 				success: success,
 				error: error
 			};
-			ajaxClient(helper.getAjaxParams(params));
+			self.ajaxClient(helper.getAjaxParams(params));
 		},
 		readById: function(id, success, error) {
 			var params = {
@@ -42,7 +46,7 @@ var Pokedex = function(configuration, ajaxClient) {
 				success: success,
 				error: error
 			};
-			ajaxClient(helper.getAjaxParams(params));
+			self.ajaxClient(helper.getAjaxParams(params));
 		},
 		readByUrl: function(url, success, error) {
 			var params = {
@@ -50,7 +54,7 @@ var Pokedex = function(configuration, ajaxClient) {
 				success: success,
 				error: error
 			}
-			ajaxClient(helper.getAjaxParams(params));
+			self.ajaxClient(helper.getAjaxParams(params));
 		}
 	}
 };

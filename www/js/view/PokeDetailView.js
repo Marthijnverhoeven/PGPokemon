@@ -1,4 +1,4 @@
-var PokeDetailView = function(containerSelector, storage) {
+var PokeDetailView = function(containerSelector) {
 	var self = this;
 	var helper = {
 		createPokemonNode: function(pokemon) {
@@ -19,7 +19,6 @@ var PokeDetailView = function(containerSelector, storage) {
 	this.setError = function(errorMessage, cb) {
 		$(self.containerSelector).empty();
 		$(self.containerSelector).append(helper.createErrorNode({ message: errorMessage }));
-		// $(self.containerSelector).trigger('create');
 		if(cb) { cb(); }
 	};
 	this.setPokemon = function(pokemon, cb) {

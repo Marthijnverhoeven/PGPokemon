@@ -26,7 +26,13 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+		document.addEventListener('deviceready', this.onDeviceReady, false);
+		document.addEventListener('click', function(evt) {
+			console.log('clicked');
+		});
+		$(document).on('tap', function(evt) {
+			console.log('tapped');
+		});
     },
     // deviceready Event Handler
     //
@@ -39,8 +45,16 @@ var app = {
 		
 		controller.populatePokeList();
 		
-		$(document).on("pagecontainershow", function (evt){
+		$(document).on('swipeleft', function(evt) {
+			console.log('swipeleft');
+			console.log(evt.currentTarget.URL);
+			$.mobile.changePage('/views/pokedetails.html');
+		});
+		
+		$(document).on("pagecontainershow", function (evt, ui){
 			console.log("pagecontainershow");
+			console.log(evt.currentTarget.URL); // current
+			console.log(ui.dataUrl); // target // undefined cuz bad (no target, is loaded @target fuck target, i dunno Y i dont know target)
 			if(evt.currentTarget.URL.endsWith("/views/pokedetails.html")) {
 				$.mobile.loading("show", {
 					text: "Loading...",
@@ -49,20 +63,25 @@ var app = {
 					html: ""
 				});
 			}
+			else if(evt.currentTarget.URL.endsWith("/views/settings.html")) {
+				controller.initSettings();
+			}
 		});
 		
-		$(document).on("pagecontainerbeforeload", function (evt, data){
+		$(document).on("pagecontainerbeforeload", function (evt, ui){
 			console.log('pagecontainerbeforeload');
-			if(data.dataUrl.endsWith("/views/pokedetails.html")) {
+			console.log(evt.currentTarget.URL);
+			console.log(ui.dataUrl);
+			if(ui.dataUrl.endsWith("/views/pokedetails.html")) {
 				console.log(`accessing pokedetails`);
 				controller.populatePokeDetail();
 			}
-			else if(data.dataUrl.endsWith("/index.html")) {
+			else if(ui.dataUrl.endsWith("/index.html")) {
 				console.log(`accessing pokelist`);
 			}
 			else {
 				console.error('accessing wtf?');
-				console.error(data.dataUrl);
+				console.error(ui.dataUrl);
 			}
 		});
     }
@@ -123,12 +142,15 @@ var fakeAjaxClient = function(input) {
 var muhStorage = {};
 var pokedexlistContainer = $('#pokedex-container');
 var pokedexdetailContainerSelector = '#pokemon-container';
+var settingsContainerSelector = '#settings-container';
 
 var Controller = function() {
 	var self = this;
-	this.pokedex = new Pokedex(null, fakeAjaxClient);
+	this.pokedex = new PokeApi(null, fakeAjaxClient);
 	this.pokeListView = new PokeListView(pokedexlistContainer, muhStorage);
 	this.pokeDetailView = new PokeDetailView(pokedexdetailContainerSelector, muhStorage);
+	
+	this.settingsView = new SettingsView(settingsContainerSelector, muhStorage);
 	
 	this.populatePokeList = function() {
 		self.pokedex.pokemon.read(null, function(data) {
@@ -153,5 +175,8 @@ var Controller = function() {
 			console.error(xhr);
 			$.mobile.loading("hide");
 		})
+	}
+	this.initSettings = function() {
+		self.settingsView.initializeSettings();
 	}
 }

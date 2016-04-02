@@ -31,7 +31,7 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-        <link rel="stylesheet" href="css/themes/Creed.css" />
+        <link rel="stylesheet" href="css/themes/Creed.css" id="theme-stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <title>Pokedex 4 Aliens</title>
@@ -68,7 +68,8 @@
 						<p>
 							Yo, deze is niet geïmplementeerd
 							<a href="./views/sample.html" class="ui-btn ui-corner-all" data-transition="slide">To samples.html</a>
-							<a href="./views/pokedetails.html?id=1" class="ui-btn ui-corner-all" data-transition="slide">To pokedetails.html</a>
+							<a href="./views/pokedetails.html" class="ui-btn ui-corner-all" data-transition="slide">To pokedetails.html</a>
+							<a href="./views/settings.html" class="ui-btn ui-corner-all" data-transition="slide">To settings.html</a>
 						</p>
 					</div>
 				</div>	
@@ -80,9 +81,20 @@
         </div>
         
         <script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="js/PokeDetailView.js"></script>
-		<script type="text/javascript" src="js/PokeListView.js"></script>
-		<script type="text/javascript" src="js/Pokedex.js"></script>
+		<!-- js/lib -->
+		<script type="text/javascript" src="js/lib/PGPokemon.js"></script>
+		<!-- js/lib/module -->
+		<script type="text/javascript" src="js/lib/module/CacheManager.js"></script>
+		<script type="text/javascript" src="js/lib/module/Geolocation.js"></script>
+		<script type="text/javascript" src="js/lib/module/PokeApi.js"></script>
+		<script type="text/javascript" src="js/lib/module/PokemonDatabase.js"></script>
+		<script type="text/javascript" src="js/lib/module/Router.js"></script>
+		<script type="text/javascript" src="js/lib/module/ThemeManager.js"></script>
+		<!-- js/view -->
+		<script type="text/javascript" src="js/view/PokeListView.js"></script>
+		<script type="text/javascript" src="js/view/PokeDetailView.js"></script>
+		<script type="text/javascript" src="js/view/SettingsView.js"></script>
+		<!-- js/ -->
 		<script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
 			app.initialize();

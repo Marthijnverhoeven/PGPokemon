@@ -6,7 +6,7 @@ var PokeListView = function(container, storage) {
 				href: self.config.viewUrl,
 				title: "dotaa"
 			}).html(pokemon.name || "Nameless pokemon :c")).on('click', function(evt) {
-				storage.pokedexClick = pokemon.url;
+				self.storage.pokedexClick = pokemon.url;
 			});
 		},
 		createErrorNode: function(error) {
@@ -23,6 +23,7 @@ var PokeListView = function(container, storage) {
 		}
 	};
 	this.container = container;
+	this.storage = storage;
 	this.config = {
 		viewUrl: "./views/pokedetails.html"
 	};
