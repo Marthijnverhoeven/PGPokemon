@@ -1,6 +1,11 @@
-var GeoLocation = function(geolocation) {
+var GeoLocation = function(geolocation, config) {
 	var self = this;
 	var geolocation = geolocation;
-	this.getCurrentLocation = function(){ };
-	this.openCurrentLocationInMaps = function() { };
+	this.config = config
+	this.getCurrentLocation = function(onSuccess, onError) {
+		geolocation.getCurrentPosition(onSuccess, onError, self.config);
+	};
+	this.openCurrentLocationInMaps = function(onSuccess, onError) {
+		
+	};
 }

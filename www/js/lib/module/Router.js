@@ -42,6 +42,17 @@ var Router = function() {
 			}
 		}
 	}
+	this.onScrollStopHandler = function(callbacks) {
+		console.log('scrollstop-handler added.');
+		return function(evt) {
+			console.log('scrollstop-event fired.');
+			var objectPath = routeHelper.getCurrentObjectPath(evt);
+			console.log(objectPath);
+			if(callbacks[objectPath]) {
+				callbacks[objectPath](evt)
+			}
+		}
+	}
 	this.onPCBeforeLoadHandler = function(callbacks) {
 		console.log('pagecontainerbeforeload-handler added.');
 		return function(evt, ui) {

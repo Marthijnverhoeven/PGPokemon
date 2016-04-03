@@ -3,19 +3,14 @@ var MyApp = function(config) {
 	// --- Initializion
 	var self = this;
 	this.config = config;
-	var promise = {};
+	var detailPromise = null;
+	var listPromise = null;
 	
 	// MANAGER
 	var router = new Router();
 	var cacheManager = new CacheManager(self.config.cacheManager);
 	var themeManager = new ThemeManager(self.config.themeManager);
-	var geoLocation = {}
-	try {
-		 geoLocation = new GeoLocation(self.config.plugins.geolocation);
-	}
-	catch (err) {
-		console.error(err);
-	}
+	var geoLocation = new GeoLocation(self.config.plugins.geolocation, self.config.geolocation);
 	
 	// DAL
 	// var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
@@ -25,7 +20,15 @@ var MyApp = function(config) {
 			setTimeout(function() {
 				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon?')) {
 					console.log('pokelist');
-					defer.resolve({ results: [{ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" }] });
+					var data = { results: (function(){
+						var arr = [];
+						for(var i = 0; i < 20; i++) {
+							arr.push({ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" });
+						}
+						return arr;
+					}())};
+					data.next = 'http://pokeapi.co/api/v2/pokemon?';
+					defer.resolve(data);
 				}
 				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
 					console.log('pokedetail');
@@ -45,37 +48,47 @@ var MyApp = function(config) {
 	var pokeDetailView = new PokeDetailView(self.config.containerSelectors.pokedexdetailContainerSelector);
 	var pokeListView = new PokeListView(self.config.containerSelectors.pokedexlistContainer, self.config.storage);
 	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.storage);
-	
-	// --- Methods
+		
+	// --- Methods	
 	this.onDeviceReady = function() {
 		console.log('deviceready-event fired.');
 		self.bindJQueryMobileEvents();
 		
+		// pokelist init
 		themeManager.loadTheme();
-		
-		promise = pokeApi.pokemon.read({});
-		if(promise) {
+		listPromise = pokeApi.pokemon.read({});
+		if(listPromise) {
 			$.mobile.loading("show", {
 				text: "Loading...",
 				textVisible: true,
 				theme: "a",
 				html: ""
 			});
-			promise.done(function(data) {
-				pokeListView.setPokemon(data.results)
+			listPromise.done(function(data) {
+				pokeListView.setPokemon(data.results);
+				listPromise = pokeApi.pokemon.readNext(data);
+			}).fail(function(err) {
+				pokeListView.setError(err);
+				listPromise = null;
+			}).always(function() {
 				$.mobile.loading("hide");
-				promise = null
 			});
 		}
 	}
 	this.bindJQueryMobileEvents = function() {
 		$(document).on('swipeleft', router.onSwipeLeftHandler(self.onSwipeLeft));
+		$(document).on('scrollstop', router.onScrollStopHandler(self.onScrollStop));
 		$(document).on('pagecontainerbeforeload', router.onPCBeforeLoadHandler(self.onPCBeforeLoad));
 		$(document).on('pagecontainershow', router.onPCShowHandler(self.onPCShow));
 	}
 	this.onSwipeLeft = {
 		"index": function() {
 			console.log('swipeleft index');
+			geoLocation.getCurrentLocation(function(pos) {
+				console.log(pos);
+			}, function(err) {
+				alert(`${err.message} :c`);
+			});
 		},
 		"pokedetails": function() {
 			console.log('swipeleft pokedetails.');
@@ -84,13 +97,37 @@ var MyApp = function(config) {
 			console.log('swipeleft settings.');
 		}
 	};
+	this.onScrollStop = {
+		"index": function() {
+			console.log('stop scrolling');
+			pokeListView.onScrollStopHandler(function() {
+				if(listPromise) {
+					$.mobile.loading("show", {
+						text: "Loading...",
+						textVisible: true,
+						theme: "a",
+						html: ""
+					});
+					listPromise.done(function(data) {
+						pokeListView.appendPokemon(data.results)
+						listPromise = pokeApi.pokemon.readNext(data);
+					}).fail(function(err) {
+						pokeListView.setError(err);
+						listPromise = null;
+					}).always(function() {
+						$.mobile.loading("hide");
+					});
+				}
+			});
+		}
+	}
 	this.onPCBeforeLoad = {
 		"index": function() {
 			console.log('beforeload index');
 		},
 		"pokedetails": function() {
 			console.log('beforeload pokedetails.');
-			promise = pokeApi.pokemon.readByUrl(self.config.storage.pokedexClick);
+			detailPromise = pokeApi.pokemon.readByUrl(self.config.storage.pokedexClick);
 		},
 		"pokelistview": function() {
 			console.log('beforeload pokelist.');
@@ -105,17 +142,20 @@ var MyApp = function(config) {
 		},
 		"pokedetails": function() {
 			console.log('showing pokedetails.');
-			if(promise) {
+			if(detailPromise) {
 				$.mobile.loading("show", {
 					text: "Loading...",
 					textVisible: true,
 					theme: "a",
 					html: ""
 				});
-				promise.done(function(data){
+				detailPromise.done(function(data){
 					pokeDetailView.setPokemon(data);
+				}).fail(function(err) {
+					pokeDetailView.setError(err);
+				}).always(function() {
 					$.mobile.loading("hide");
-					promise = null;
+					detailPromise = null;
 				});
 			}
 		},
@@ -129,11 +169,11 @@ var MyApp = function(config) {
 				themeManager.currentTheme(sender.val());
 			});
 			settingsView.addCacheControls(function(sender, evt) {
-				console.log('radius');
 				console.log(sender.val());
+				cacheManager.cacheRadius(sender.val());
 			}, function(sender, evt) {
-				console.log('count');
 				console.log(sender.val());
+				cacheManager.cacheCount(sender.val());
 			});
 		}
 	};

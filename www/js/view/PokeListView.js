@@ -39,9 +39,23 @@ var PokeListView = function(containerSelector, storage) {
 		addMultiplePokemon(container, pokeList);
 		container.listview('refresh');
 	};
+	this.onScrollStopHandler = function(callback) { 
+		var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+			screenHeight = $.mobile.getScreenHeight(), // get device height
+			contentHeight = $("#pokedex").outerHeight(), // get height of pokelist container
+			scrolled = $(window).scrollTop(), // get current scroll value
+			header = $(".ui-header", activePage).hasClass("ui-header-fixed") ? $(".ui-header", activePage).outerHeight() - 1 : $(".ui-header", activePage).outerHeight(),
+			footer = $(".ui-footer", activePage).hasClass("ui-footer-fixed") ? $(".ui-footer", activePage).outerHeight() - 1 : $(".ui-footer", activePage).outerHeight(),
+			scrollEnd = contentHeight - screenHeight + header + footer; // calculate maximum scroll value within pokelist container
+		if (scrolled >= scrollEnd) { // true, when at the bottom of pokelist container
+			console.log("load pokemon");
+			callback();
+		}
+	}
 	this.appendPokemon = function(pokeData) {
-		console.error('no implementerino');
-		return false;
+		var container = $(self.containerSelector);
+		addMultiplePokemon(container, pokeData);
+		container.listview('refresh');
 		// if (Array.isArray(pokeData)) {
 		// 	// array of pokemon
 		// }

@@ -42,6 +42,11 @@ var config = {
 		themeSettings: '#theme-setting-container',
 		caughtPokemon: '#my-pokemon'
 	},
+	geolocation: {
+		maximumAge: 3000, // Maximum age (in ms) of the retrieved location.
+		timeout: 5000, // Maximum time (in ms) after which ANY callback is supposed to be called, will call onError when timeout is reached.
+		enableHighAccuracy: true // Specifies to the device that the best accuraty possible should be used (rather than just a generic nearby location).
+	},
 	plugins: {
 		geolocation: (function(){ 
 			if(navigator.geolocation){

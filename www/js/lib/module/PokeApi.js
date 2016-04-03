@@ -34,6 +34,15 @@ var PokeApi = function(configuration, ajaxClient) {
 			};
 			return self.ajaxClient(helper.getAjaxParams(params));
 		},
+		readNext: function(options) {
+			if(!options.next) {
+				return null;
+			}
+			var params = {
+				url: `${options.next}`,
+			};
+			return self.ajaxClient(helper.getAjaxParams(params));
+		},
 		// Returns a promise to retrieve a pokemon by id.
 		readById: function(id) {
 			var params = {
