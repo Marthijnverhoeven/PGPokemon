@@ -175,6 +175,8 @@ var MyApp = function(config) {
 				console.log(sender.val());
 				cacheManager.cacheCount(sender.val());
 			});
+			settingsView.setCacheValues(cacheManager.cacheRadius(), cacheManager.cacheCount());
+			settingsView.setRadioValues(themeManager.currentTheme());
 		}
 	};
 }

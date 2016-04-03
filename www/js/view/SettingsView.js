@@ -24,4 +24,11 @@ var SettingsView = function(cacheRadiusCS, cacheCountCS, storage) {
 		linkSlider(self.cacheRadiusCS, radiusCallback);
 		linkSlider(self.cacheCountCS, countCallback);
 	}
+	this.setCacheValues = function(cacheRadius, cacheCount) {
+		$(self.cacheRadiusCS).val(cacheRadius).slider().slider("refresh");
+		$(self.cacheCountCS).val(cacheCount).slider().slider("refresh");
+	}
+	this.setRadioValues = function(currentTheme) {
+		$(`#${currentTheme}`).attr('checked', 'checked').checkboxradio().checkboxradio("refresh");
+	}
 }

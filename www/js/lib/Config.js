@@ -40,7 +40,8 @@ var config = {
 		settingCacheRadius: '#cache-setting-radius',
 		settingCacheCount: '#cache-setting-count',
 		themeSettings: '#theme-setting-container',
-		caughtPokemon: '#my-pokemon'
+		caughtPokemon: '#my-pokemon-container',
+		nearbyPokemon: '#nearby-pokemon-container'
 	},
 	geolocation: {
 		maximumAge: 3000, // Maximum age (in ms) of the retrieved location.

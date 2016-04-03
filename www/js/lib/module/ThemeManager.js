@@ -25,7 +25,7 @@ var ThemeManager = function(config) {
 		if(!key) {
 			key = getCurrentThemeOrDefault();
 		}
-		$(self.config.themeStylesheetSelector).attr({href : self.config.themes[key]});
+		$(self.config.themeStylesheetSelector).attr({ href: self.config.themes[key] });
 		$(document).enhanceWithin();
 		return true;
 	};
