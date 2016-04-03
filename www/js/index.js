@@ -24,19 +24,3 @@ var app = {
 	}
 }
 
-$(document).on("scrollstop", function (e) {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
-        screenHeight = $.mobile.getScreenHeight(),
-        contentHeight = $(".ui-content", activePage).outerHeight(),
-        scrolled = $(window).scrollTop(),
-        header = $(".ui-header", activePage).hasClass("ui-header-fixed") ? $(".ui-header", activePage).outerHeight() - 1 : $(".ui-header", activePage).outerHeight(),
-        footer = $(".ui-footer", activePage).hasClass("ui-footer-fixed") ? $(".ui-footer", activePage).outerHeight() - 1 : $(".ui-footer", activePage).outerHeight(),
-        scrollEnd = contentHeight - screenHeight + header + footer;
-    $(".ui-btn-left", activePage).text("Scrolled: " + scrolled);
-    $(".ui-btn-right", activePage).text("ScrollEnd: " + scrollEnd);
-    if (activePage[0].id == "home" && scrolled >= scrollEnd) {
-        console.log("adding...");
-        addMore(activePage);
-    }
-});
-

@@ -17,8 +17,8 @@ var config = {
 	cacheManager: {
 		themeStylesheetSelector: '#theme-stylesheet',
 		themes: {
-			BostonHenk: '/css/themes/BostonHenk.css',
-			Creed: '/css/themes/Creed.css'
+			BostonHenk: 'css/themes/BostonHenk.css',
+			Creed: 'css/themes/Creed.css'
 		},
 		storage: localStorage,
 		default: {
@@ -26,11 +26,11 @@ var config = {
 			cacheRadius: 6 
 		}
 	},
-	settingsManager: {
+	themeManager: {
 		themeStylesheetSelector: '#theme-stylesheet',
 		themes: {
-			BostonHenk: '/css/themes/BostonHenk.css',
-			Creed: '/css/themes/Creed.css'
+			BostonHenk: 'css/themes/BostonHenk.css',
+			Creed: 'css/themes/Creed.css'
 		},
 		storage: localStorage
 	},

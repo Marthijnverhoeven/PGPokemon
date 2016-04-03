@@ -1,13 +1,6 @@
 var ThemeManager = function(config) {
 	var self = this;
-	this.config = config || {
-		themeStylesheetSelector: '#theme-stylesheet',
-		themes: {
-			BostonHenk: '/css/themes/BostonHenk.css',
-			Creed: '/css/themes/Creed.css'
-		},
-		storage: localStorage
-	};
+	this.config = config;
 	// --- Themes
 	// Stores key to storage-object
 	var setCurrentTheme = function(key) {
@@ -33,6 +26,7 @@ var ThemeManager = function(config) {
 			key = getCurrentThemeOrDefault();
 		}
 		$(self.config.themeStylesheetSelector).attr({href : self.config.themes[key]});
+		$(document).enhanceWithin();
 		return true;
 	};
 	// Getter and setter for currentTheme (includes loading after setter).

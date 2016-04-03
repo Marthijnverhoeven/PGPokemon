@@ -25,7 +25,7 @@ var PokeListView = function(containerSelector, storage) {
 	this.containerSelector = containerSelector;
 	this.storage = storage;
 	this.config = {
-		viewUrl: "./views/pokedetails.html"
+		viewUrl: "pokedetails.html"
 	};
 	this.setError = function(errorMessage) {
 		var container = $(self.containerSelector);
