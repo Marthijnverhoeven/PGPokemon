@@ -37,7 +37,10 @@ var config = {
 	containerSelectors: {
 		pokedexlistContainer: '#pokedex-container',
 		pokedexdetailContainerSelector: '#pokemon-container',
-		settingsContainerSelector: '#settings-container'
+		settingCacheRadius: '#cache-setting-radius',
+		settingCacheCount: '#cache-setting-count',
+		themeSettings: '#theme-setting-container',
+		caughtPokemon: '#my-pokemon'
 	},
 	plugins: {
 		geolocation: (function(){ 
@@ -45,7 +48,7 @@ var config = {
 				return navigator.geolocation;
 			}
 			throw new Error('OMG NO GEOLOCATION!');
-		}())
+		})()
 	},
 	storage: localStorage
 };

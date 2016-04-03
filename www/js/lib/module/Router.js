@@ -13,13 +13,13 @@ var Router = function() {
 			var urlObject = $.mobile.path.parseUrl(ui.absUrl);
 			return !!urlObject.filename
 					? urlObject.filename
-					: ['index.html'];
+					: 'index.html';
 		},
 		getCurrentPathname: function(evt) { // gives access to current page
 			var urlObject = $.mobile.path.parseUrl(evt.currentTarget.URL);
 			return !!urlObject.filename
 					? urlObject.filename
-					: ['index.html'];
+					: 'index.html';
 		},
 		getCurrentObjectPath: function(evt) {
 			return routeHelper.getObjectPath(routeHelper.getCurrentPathname(evt));

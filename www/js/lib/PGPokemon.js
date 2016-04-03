@@ -9,41 +9,49 @@ var MyApp = function(config) {
 	var router = new Router();
 	var cacheManager = new CacheManager(self.config.cacheManager);
 	var themeManager = new ThemeManager(self.config.themeManager);
-	// var geoLocation = new GeoLocation(self.config.plugins.geolocation);
+	var geoLocation = {}
+	try {
+		 geoLocation = new GeoLocation(self.config.plugins.geolocation);
+	}
+	catch (err) {
+		console.error(err);
+	}
 	
 	// DAL
-	var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
-	// var pokeApi = new PokeApi(self.config.pokeApi, function(ajaxParams) {
-	// 	console.log('ajax call started');
-	// 	return $.Deferred(function (defer){
-	// 		setTimeout(function() {
-	// 			if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon?')) {
-	// 				console.log('pokelist');
-	// 				defer.resolve({ results: [{ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" }] });
-	// 			}
-	// 			else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
-	// 				console.log('pokedetail');
-	// 				defer.resolve({ name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
-	// 			}
-	// 			else {
-	// 				console.error(new Error('lmao what the fuck are you doing!'));
-	// 				defer.reject({ status: 500, statusText: "500 Internal Server Error" });
-	// 			}
-	// 		}, 2000)
-	// 	}).promise();
-	// });
+	// var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
+	var pokeApi = new PokeApi(self.config.pokeApi, function(ajaxParams) {
+		console.log('ajax call started');
+		return $.Deferred(function (defer){
+			setTimeout(function() {
+				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon?')) {
+					console.log('pokelist');
+					defer.resolve({ results: [{ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" }] });
+				}
+				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
+					console.log('pokedetail');
+					defer.resolve({ name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+				}
+				else {
+					console.error(new Error('lmao what the fuck are you doing!'));
+					defer.reject({ status: 500, statusText: "500 Internal Server Error" });
+				}
+			}, 1000)
+		}).promise();
+	});
 	var pokemonDatabase = new PokemonDatabase(self.config.database);
 	var pokemonRepository = new PokemonRepository(pokemonDatabase);
 	
 	// VIEW
 	var pokeDetailView = new PokeDetailView(self.config.containerSelectors.pokedexdetailContainerSelector);
 	var pokeListView = new PokeListView(self.config.containerSelectors.pokedexlistContainer, self.config.storage);
-	var settingsView = new SettingsView(self.config.containerSelectors.settingsContainerSelector, self.config.storage);
+	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.storage);
 	
 	// --- Methods
 	this.onDeviceReady = function() {
 		console.log('deviceready-event fired.');
 		self.bindJQueryMobileEvents();
+		
+		themeManager.loadTheme();
 		
 		promise = pokeApi.pokemon.read({});
 		if(promise) {
@@ -116,6 +124,17 @@ var MyApp = function(config) {
 		},
 		"settings": function() {
 			console.log('showing settings.');
+			settingsView.addThemeControls(themeManager.currentTheme(), themeManager.getThemes(), function(sender, evt) {
+				console.log(sender.val());
+				themeManager.currentTheme(sender.val());
+			});
+			settingsView.addCacheControls(function(sender, evt) {
+				console.log('radius');
+				console.log(sender.val());
+			}, function(sender, evt) {
+				console.log('count');
+				console.log(sender.val());
+			});
 		}
 	};
 }

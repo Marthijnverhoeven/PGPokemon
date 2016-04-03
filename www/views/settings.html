@@ -4,10 +4,23 @@
 		<h1>Settings</h1>
 	</div>
 	
-	<div data-role="main" class="ui-content ui-content-a" id="settings-container">
-		<h1>ITSA SOTAD</h1>
-		<label for='slider-1'>Slider:</label>
-		<input type='number' name='slider-1' data-type='range' data-highlight='true' min='0' max='12' step='1' value='6'>
+	<div data-role="main" class="ui-content ui-content-a">
+		<div data-role="collapsible" data-inset="false">
+			<h3>Cache settings</h3>
+			<label for='slider-1'>Cache radius</label>
+			<input type='number' name='slider-1' id="cache-setting-radius" data-type='range' data-highlight='true' min='0' max='20' step='1' value='6'>
+			<label for='slider-2'>Cache count</label>
+			<input type='number' name='slider-2' id="cache-setting-count" data-type='range' data-highlight='true' min='0' max='20' step='1' value='6'>
+		</div>
+		<div data-role="collapsible" data-inset="false">	
+			<h3>Themes</h3>
+			<fieldset data-role="controlgroup" id="theme-setting-container">
+				<input type="radio" name="theme-settings" id="Creed" value="Creed">
+				<label for="Creed">Pokemon</label>
+				<input type="radio" name="theme-settings" id="BostonHenk" value="BostonHenk">
+				<label for="BostonHenk">Dark</label>
+			</fieldset>
+		</div>
 	</div>
 	
 	<div data-role="footer" class="ui-bar ui-bar-a" data-id="pokefoot">
