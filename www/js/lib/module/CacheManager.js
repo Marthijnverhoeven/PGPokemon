@@ -12,7 +12,8 @@ var CacheManager = function(config) {
 			cacheRadius: 6 
 		}
 	};
-	var cache = [];
+	var caches = [];
+	var initCallbacks = [];
 	// --- Cache
 	var calculateRandomLocation = function (long, lat, acc, radius) {
 		var random = Math.random();
@@ -28,19 +29,27 @@ var CacheManager = function(config) {
 		} 
 	}
 	var randomId = function(pokeCount) {
+		console.log(`poekcount: ${pokeCount}`);
 		return Math.floor(Math.random() * pokeCount) + 1 
+	}
+	var initialized = function() {
+		console.log('initted');
+		for(callback of initCallbacks) {
+			callback(self.getCaches());
+		}
 	}
 	this.initialize = function(pos, pokeCount) {
 		for(var i = 0; i < self.cacheCount(); i++) {
-			cache.push({
+			caches.push({
 				coords: calculateRandomLocation(pos.coords.longitude, pos.coords.latitude, pos.coords.accuracy, self.cacheRadius()),
 				pokeId: randomId(pokeCount)
 			});
 		}
+		initialized();
 	}
 	// Returns all currently calculated caches.
 	this.getCaches = function() {
-		return cache;
+		return caches;
 	};
 	// Completely resets caches, including: location, count and radius based on settings or RNG.
 	this.resetCaches = function(pos, pokeCount) {
@@ -71,5 +80,9 @@ var CacheManager = function(config) {
 		else { // getter
 			return getCacheSettingOrDefault('cacheCount');
 		}
+	}
+	// fires after initialization
+	this.onInitialization = function(callback) {
+		initCallbacks.push(callback);
 	}
 }

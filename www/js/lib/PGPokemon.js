@@ -16,9 +16,14 @@ var MyApp = function(config) {
 	// var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
 	var pokeApi = new PokeApi(self.config.pokeApi, function(ajaxParams) {
 		console.log('ajax call started');
+		console.log(ajaxParams);
 		return $.Deferred(function (defer){
 			setTimeout(function() {
-				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon?')) {
+				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
+					console.log('pokedetail');
+					defer.resolve({ name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+				}
+				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon')) {
 					console.log('pokelist');
 					var data = { results: (function(){
 						var arr = [];
@@ -28,11 +33,8 @@ var MyApp = function(config) {
 						return arr;
 					}())};
 					data.next = 'http://pokeapi.co/api/v2/pokemon?';
+					data.count = 20;
 					defer.resolve(data);
-				}
-				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
-					console.log('pokedetail');
-					defer.resolve({ name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
 				}
 				else {
 					console.error(new Error('lmao what the fuck are you doing!'));
@@ -48,6 +50,7 @@ var MyApp = function(config) {
 	var pokeDetailView = new PokeDetailView(self.config.containerSelectors.pokedexdetailContainerSelector);
 	var pokeListView = new PokeListView(self.config.containerSelectors.pokedexlistContainer, self.config.storage);
 	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.storage);
+	var nearbyPokemonView = new NearbyPokemonView(self.config.containerSelectors.nearbyPokemon);
 		
 	// --- Methods	
 	this.onDeviceReady = function() {
@@ -74,6 +77,36 @@ var MyApp = function(config) {
 				$.mobile.loading("hide");
 			});
 		}
+		// nearby pokemon init
+		var countPromise = pokeApi.pokemon.count();
+		geoLocation.getCurrentLocation(function(pos) {
+			console.log(pos);
+			countPromise.done(function(count) {
+				console.log(`asdasdasd`);
+				console.log(count);
+				cacheManager.initialize(pos, count);
+			});
+		}, function(err) {
+			console.error(err);
+		});
+		cacheManager.onInitialization(function(caches) {
+			console.log(caches);
+			var cacheLength = Object.keys(caches).length; 
+			var pokemon = [];
+			for(var key in caches) {
+				var tempPromise = pokeApi.pokemon.readById(caches[key].pokeId);
+				tempPromise.done(function(data) {
+					pokemon.push(data);
+					if(pokemon.length === cacheLength) {
+						nearbyPokemonView.setCaches(pokemon, caches, function(pokemon, cache) {
+							console.log('VANGEN! BITCH');
+							console.log(pokemon);
+							console.log(cache);
+						});
+					}
+				});
+			}
+		});
 	}
 	this.bindJQueryMobileEvents = function() {
 		$(document).on('swipeleft', router.onSwipeLeftHandler(self.onSwipeLeft));

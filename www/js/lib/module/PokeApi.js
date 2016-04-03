@@ -16,6 +16,7 @@ var PokeApi = function(configuration, ajaxClient) {
 			return `?${$.param(queryOptions)}`;
 		}
 	};
+	var cache = {};
 	this.config = configuration || {
 		baseUrl: "http://pokeapi.co/api/v2/",
 		endpoints: { 
@@ -27,35 +28,68 @@ var PokeApi = function(configuration, ajaxClient) {
 	};
 	this.ajaxClient = ajaxClient;
 	this.pokemon = {
+		// Returns a promise to return pokemon count
+		count: function() {
+			return $.Deferred(function(defer) {
+				if(cache['pokeCount']) {
+					return defer.resolve(cache['pokeCount']);
+				}
+				
+				console.log(`${self.config.baseUrl}${self.config.endpoints.pokemon.read}`);
+				self.ajaxClient(helper.getAjaxParams({
+					url: `${self.config.baseUrl}${self.config.endpoints.pokemon.read}`
+				})).done(function(data) {
+					console.log(data);
+					defer.resolve(data.count);
+					cache['pokeCount'] = data.count;
+				}).fail(function(err) {
+					defer.reject(err);
+				});
+			}).promise();
+			
+		},
 		// Returns a promise to retrieve all pokemon.
 		read: function(options) {
-			var params = {
+			return self.ajaxClient(helper.getAjaxParams({
 				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.read}${helper.parameterizeQueryOptions(options)}`,
-			};
-			return self.ajaxClient(helper.getAjaxParams(params));
+			}));
 		},
+		// Returns a promise to retrieve the next list of pokemon.
 		readNext: function(options) {
 			if(!options.next) {
 				return null;
 			}
-			var params = {
+			return self.ajaxClient(helper.getAjaxParams({
 				url: `${options.next}`,
-			};
-			return self.ajaxClient(helper.getAjaxParams(params));
+			}));
 		},
 		// Returns a promise to retrieve a pokemon by id.
 		readById: function(id) {
-			var params = {
+			if(cache[id]) {
+				return $.Deferred(function(defer) {
+					defer.resolve(cache[id]);
+				}).promise();	
+			}
+			return self.ajaxClient(helper.getAjaxParams({
 				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`
-			};
-			return self.ajaxClient(helper.getAjaxParams(params));
+			})).done(function(data) { 
+				cache[data.url] = data;
+				cache[data.id] = data;
+			});
 		},
 		// Returns a promise to retrieve a pokemon by url.
 		readByUrl: function(url) {
-			var params = {
-				url: url
+			if(cache[url]) {
+				return $.Deferred(function(defer) {
+					defer.resolve(cache[url]);
+				}).promise();
 			}
-			return self.ajaxClient(helper.getAjaxParams(params));
+			return self.ajaxClient(helper.getAjaxParams({
+				url: url
+			})).done(function(data) { 
+				cache[data.url] = data;
+				cache[data.id] = data;
+			});
 		}
 	}
 };
