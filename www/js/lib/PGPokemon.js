@@ -104,7 +104,7 @@ var MyApp = function(config) {
 			console.error(err);
 		});
 		cacheManager.onInitialization(function(caches) {
-			console.log(caches);
+			console.log('init cahcemanager');
 			var cacheLength = Object.keys(caches).length; 
 			var pokemon = [];
 			for(var key in caches) {
@@ -112,17 +112,24 @@ var MyApp = function(config) {
 				tempPromise.done(function(data) {
 					pokemon.push(data);
 					if(pokemon.length === cacheLength) {
-						nearbyPokemonView.setCaches(pokemon, caches, function(pokemon, cache) {
-							console.log('VANGEN! BITCH');
-							console.log(pokemon);
-							console.log(cache);
-							// todo calculate percentage
-							pokemonRepository.createSingle(pokemon).done(function() {
-								caughtPokemonView.appendPokemon(pokemon);
-							}).fail(function(err) {
-								console.error(err);
-								alert('ur pokemon is shit and cannot be cought');
+						console.log('pokeman retrieved');
+						geoLocation.watchLocation(function(pos) {
+							console.log('updota nearbyview');
+							console.log(pos);
+							nearbyPokemonView.setCaches(pos, pokemon, caches, function(pokemon, cache) {
+								console.log('VANGEN! BITCH');
+								console.log(pokemon);
+								console.log(cache);
+								// todo calculate percentage
+								pokemonRepository.createSingle(pokemon).done(function() {
+									caughtPokemonView.appendPokemon(pokemon);
+								}).fail(function(err) {
+									console.error(err);
+									alert('ur pokemon is shit and cannot be cought');
+								});
 							});
+						}, function(err) {
+							console.error(err);
 						});
 					}
 				});
@@ -133,11 +140,6 @@ var MyApp = function(config) {
 			console.log(results);
 			caughtPokemonView.setPokemon(results.rows);
 		});
-		// pokemonRepository.createSingle({ name: "pokoman", url: 'http://pokeapi.co/api/v2/pokemon/' }).done(function() {
-		// 	console.log('I AM THE CREATOR');
-		// }).fail(function(err) {
-		// 	console.error(err);
-		// });
 		console.timeEnd('logme');
 	}
 	this.bindJQueryMobileEvents = function() {

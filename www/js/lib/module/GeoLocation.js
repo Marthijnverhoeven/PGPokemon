@@ -3,21 +3,43 @@ var GeoLocation = function(geolocation, config) {
 	var geolocation = geolocation;
 	this.config = config
 	this.getCurrentLocation = function(onSuccess, onError) {
-		// geolocation.getCurrentPosition(onSuccess, onError, self.config);
-		onSuccess({
-			coords: {
-				accuracy:63,
-				altitude:null,
-				altitudeAccuracy:null,
-				heading:null,
-				latitude:51.8178159,
-				longitude:5.7871494,
-				speed:null
-			},
-			timestamp:1459717566818
-		});
+		geolocation.getCurrentPosition(onSuccess, onError, self.config);
+		// onSuccess({
+		// 	coords: {
+		// 		accuracy:63,
+		// 		altitude:null,
+		// 		altitudeAccuracy:null,
+		// 		heading:null,
+		// 		latitude:50,
+		// 		longitude:50,
+		// 		speed:null
+		// 	},
+		// 	timestamp:1459717566818
+		// });
 	};
-	this.openCurrentLocationInMaps = function(onSuccess, onError) {
-		
-	};
+	this.watchLocation = function(onSuccess, onError) {
+		return geolocation.watchPosition(onSuccess, onError, self.config);
+		// var fakeLocator = function(pos) {
+		// 	setTimeout(function() {
+		// 		onSuccess(pos);
+		// 		pos.coords.longitude += 0.01;
+		// 		pos.coords.latitude += 0.01;
+		// 		pos.timestamp += 1;
+		// 		fakeLocator(pos);
+		// 	}, 2000);
+		// }
+		// fakeLocator({
+		// 	coords: {
+		// 		accuracy: 63,
+		// 		altitude: null,
+		// 		altitudeAccuracy: null,
+		// 		heading: null,
+		// 		latitude: 50,
+		// 		longitude: 50,
+		// 		speed: null
+		// 	},
+		// 	timestamp: 1459717566818
+		// });
+		// return '7uibkjwohu';
+	}
 }

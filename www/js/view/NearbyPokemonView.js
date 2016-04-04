@@ -11,10 +11,17 @@ var NearbyPokemonView = function(nearbyPokemonCS) {
 			`</div>` +
 		`</li>`;
 		var jQueryNode = $(html);
-		jQueryNode.find('button').on('click', function(evt) {
+		var button = jQueryNode.find('button')
+		button.on('click', function(evt) {
 			callback(pokemon, cache);
 		});
+		if(!cache.catchable) {
+			button.attr('disabled', 'disabled');
+		}
 		return jQueryNode;
+	}
+	var createInitialNode = function(pos) {
+		return $(`<a href="geo:${pos.coords.latitude},${pos.coords.longitude}" class="ui-btn ui-corner-all">Mijn locatie</a>`);
 	}
 	var appendCaches = function(container, pokemons, caches, callback) {
 		for(var i =0; i < caches.length; i++) {
@@ -22,10 +29,30 @@ var NearbyPokemonView = function(nearbyPokemonCS) {
 			container.append(node);
 		}
 	}
+	var getSorted = function(a, b) {
+		return a > b
+			? { max: a, min: b }
+			: { max: b, min: a };
+	}
+	var calcCacheDistance = function(pos, cache) {
+		console.log(arguments);
+		cache.catchable = true;
+		var distance = 100;
+		var sortedLong = getSorted(pos.coords.longitude, cache.coords.long);
+		var sortedLat = getSorted(pos.coords.latitude, cache.coords.lat); 
+		if(sortedLat.max - sortedLat.min > distance || sortedLong.max - sortedLong.min > distance) {
+			cache.catchable = false;
+		}
+	}
 	this.nearbyPokemonCS = nearbyPokemonCS;
-	this.setCaches = function(pokemons, caches, callback) {
+	this.setCaches = function(pos, pokemons, caches, callback) {
+		for(var cache of caches) {
+			calcCacheDistance(pos, cache);
+		}
 		var container = $(self.nearbyPokemonCS);
+		var initialNode = createInitialNode(pos);
 		container.empty();
+		container.append(initialNode);
 		appendCaches(container, pokemons, caches, callback);
 		container.listview('refresh');
 	}
