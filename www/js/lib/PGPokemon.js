@@ -5,6 +5,8 @@ var MyApp = function(config) {
 	this.config = config;
 	var detailPromise = null;
 	var listPromise = null;
+	var currentPokemonDetail = null;
+	var pokeCount = null;
 	
 	// MANAGER
 	var router = new Router();
@@ -19,21 +21,29 @@ var MyApp = function(config) {
 		console.log(ajaxParams);
 		return $.Deferred(function (defer){
 			setTimeout(function() {
-				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/')) {
+				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/1')) {
 					console.log('pokedetail');
-					defer.resolve({ name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/1', id: 1, name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+				}
+				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/2')) {
+					console.log('pokedetail');
+					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/2', id: 2, name: "charredmander", sprites: { front_default: "http://www.savethesalamanders.com/uploads/4/9/2/7/4927660/5274618.jpg?499" } });
+				}
+				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/3')) {
+					console.log('pokedetail');
+					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/3', id: 3, name: "warturtle", sprites: { front_default: "http://www.gannett-cdn.com/-mm-/59788d05a55862b70391a02d6ac8eb19fd05eb62/c=67-0-1128-796&r=x404&c=534x401/local/-/media/2015/06/26/AsburyPark/B9317849191Z.1_20150626070432_000_G1DB5V4P8.1-0.jpg" } });
 				}
 				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon')) {
 					console.log('pokelist');
 					var data = { results: (function(){
 						var arr = [];
-						for(var i = 0; i < 20; i++) {
-							arr.push({ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" });
-						}
+						arr.push({ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" });
+						arr.push({ name: "charredmander", url: "http://pokeapi.co/api/v2/pokemon/2" });
+						arr.push({ name: "warturtle", url: "http://pokeapi.co/api/v2/pokemon/3" });
 						return arr;
 					}())};
-					data.next = 'http://pokeapi.co/api/v2/pokemon?';
-					data.count = 20;
+					// data.next = 'http://pokeapi.co/api/v2/pokemon?';
+					data.count = 3;
 					defer.resolve(data);
 				}
 				else {
@@ -51,6 +61,7 @@ var MyApp = function(config) {
 	var pokeListView = new PokeListView(self.config.containerSelectors.pokedexlistContainer, self.config.storage);
 	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.storage);
 	var nearbyPokemonView = new NearbyPokemonView(self.config.containerSelectors.nearbyPokemon);
+	var caughtPokemonView = new CaughtPokemonView(self.config.containerSelectors.caughtPokemon, self.config.storage);
 		
 	// --- Methods	
 	this.onDeviceReady = function() {
@@ -82,8 +93,9 @@ var MyApp = function(config) {
 		geoLocation.getCurrentLocation(function(pos) {
 			console.log(pos);
 			countPromise.done(function(count) {
-				console.log(`asdasdasd`);
+				console.log(`pokecount`);
 				console.log(count);
+				pokeCount = count;
 				cacheManager.initialize(pos, count);
 			});
 		}, function(err) {
@@ -102,29 +114,97 @@ var MyApp = function(config) {
 							console.log('VANGEN! BITCH');
 							console.log(pokemon);
 							console.log(cache);
+							// todo calculate percentage
+							pokemonRepository.createSingle(pokemon).done(function() {
+								caughtPokemonView.appendPokemon(pokemon);
+							}).fail(function(err) {
+								console.error(err);
+								alert('ur pokemon is shit and cannot be cought');
+							});
 						});
 					}
 				});
 			}
 		});
+		// display caught pokemon
+		pokemonRepository.readAll().done(function(tx, results) {
+			console.log(results);
+			caughtPokemonView.setPokemon(results.rows);
+		});
+		// pokemonRepository.createSingle({ name: "pokoman", url: 'http://pokeapi.co/api/v2/pokemon/' }).done(function() {
+		// 	console.log('I AM THE CREATOR');
+		// }).fail(function(err) {
+		// 	console.error(err);
+		// });
 	}
 	this.bindJQueryMobileEvents = function() {
-		$(document).on('swipeleft', router.onSwipeLeftHandler(self.onSwipeLeft));
+		$(document).on('swipeleft', router.onSwipeHandler(self.onSwipeLeft));
+		$(document).on('swiperight', router.onSwipeHandler(self.onSwipeRight));
 		$(document).on('scrollstop', router.onScrollStopHandler(self.onScrollStop));
 		$(document).on('pagecontainerbeforeload', router.onPCBeforeLoadHandler(self.onPCBeforeLoad));
 		$(document).on('pagecontainershow', router.onPCShowHandler(self.onPCShow));
+		window.onerror = function(err) {
+			console.error(err);
+			console.error(err.stack);
+		};
 	}
 	this.onSwipeLeft = {
 		"index": function() {
 			console.log('swipeleft index');
-			geoLocation.getCurrentLocation(function(pos) {
-				console.log(pos);
-			}, function(err) {
-				alert(`${err.message} :c`);
-			});
 		},
 		"pokedetails": function() {
 			console.log('swipeleft pokedetails.');
+			if(currentPokemonDetail && currentPokemonDetail.id+1 <= pokeCount) {
+				$.mobile.loading("show", {
+					text: "Loading...",
+					textVisible: true,
+					theme: "a",
+					html: ""
+				});
+				detailPromise = pokeApi.pokemon.readById((currentPokemonDetail.id+1));
+				// detailPromise = $.Deferred(function(defer) {
+				// 	defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/', id: 5, name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+				// 	defer.reject(new Error("404 not found", { details: "yolo not found" }));
+				// });
+				detailPromise.done(function() {
+					$(":mobile-pagecontainer").pagecontainer('change', 'pokedetails.html', {
+						allowSamePageTransition: true
+					});
+				}).fail(function() {
+					detailPromise = null;
+				}).always(function() {
+					$.mobile.loading("hide");
+				});
+			}
+		},
+		"settings": function() {
+			console.log('swipeleft settings.');
+		}
+	};
+	this.onSwipeRight = {
+		"index": function() {
+			console.log('swiperight index');
+		},
+		"pokedetails": function() {
+			console.log('swiperight pokedetails.');
+			if(currentPokemonDetail && (currentPokemonDetail.id-1) > 0) {
+				$.mobile.loading("show", {
+					text: "Loading...",
+					textVisible: true,
+					theme: "a",
+					html: ""
+				});
+				detailPromise = pokeApi.pokemon.readById((currentPokemonDetail.id-1));
+				detailPromise.done(function() {
+					$(":mobile-pagecontainer").pagecontainer('change', 'pokedetails.html', {
+						allowSamePageTransition: true
+					});
+				}).fail(function() {
+					detailPromise = null;
+				}).always(function() {
+					$.mobile.loading("hide");
+				});
+			}
 		},
 		"settings": function() {
 			console.log('swipeleft settings.');
@@ -160,7 +240,13 @@ var MyApp = function(config) {
 		},
 		"pokedetails": function() {
 			console.log('beforeload pokedetails.');
-			detailPromise = pokeApi.pokemon.readByUrl(self.config.storage.pokedexClick);
+			if(!detailPromise) {
+				console.log('from index');
+				detailPromise = pokeApi.pokemon.readByUrl(self.config.storage.pokedexClick);
+			}
+			else {
+				console.log('from swipe');
+			}
 		},
 		"pokelistview": function() {
 			console.log('beforeload pokelist.');
@@ -183,6 +269,7 @@ var MyApp = function(config) {
 					html: ""
 				});
 				detailPromise.done(function(data){
+					currentPokemonDetail = data;
 					pokeDetailView.setPokemon(data);
 				}).fail(function(err) {
 					pokeDetailView.setError(err);

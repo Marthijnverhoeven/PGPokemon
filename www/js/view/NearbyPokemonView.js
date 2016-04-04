@@ -1,4 +1,4 @@
-NearbyPokemonView = function(nearbyPokemonCS) {
+var NearbyPokemonView = function(nearbyPokemonCS) {
 	var self = this;
 	var createJQueryNode = function(pokemon, cache, callback) {
 		var html = `<li>` +

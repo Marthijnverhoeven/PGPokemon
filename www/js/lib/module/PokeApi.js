@@ -70,9 +70,9 @@ var PokeApi = function(configuration, ajaxClient) {
 					defer.resolve(cache[id]);
 				}).promise();	
 			}
-			return self.ajaxClient(helper.getAjaxParams({
-				url: `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`
-			})).done(function(data) { 
+			var url = `${self.config.baseUrl}${self.config.endpoints.pokemon.readById}${id}`;
+			return self.ajaxClient(helper.getAjaxParams({ url: url })).done(function(data) { 
+				data.url = url;
 				cache[data.url] = data;
 				cache[data.id] = data;
 			});
@@ -84,9 +84,8 @@ var PokeApi = function(configuration, ajaxClient) {
 					defer.resolve(cache[url]);
 				}).promise();
 			}
-			return self.ajaxClient(helper.getAjaxParams({
-				url: url
-			})).done(function(data) { 
+			return self.ajaxClient(helper.getAjaxParams({ url: url })).done(function(data) {
+				data.url = url; 
 				cache[data.url] = data;
 				cache[data.id] = data;
 			});

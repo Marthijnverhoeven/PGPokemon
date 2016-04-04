@@ -7,19 +7,19 @@
 // 	- pagecontainershow
 var Router = function() {
 	var self = this;
-	var count = 0;
+	var defaultPage = 'index.html';
 	var routeHelper = {
 		getTargetPathname: function(ui) { // Gives access to target page after navigation
 			var urlObject = $.mobile.path.parseUrl(ui.absUrl);
 			return !!urlObject.filename
 					? urlObject.filename
-					: 'index.html';
+					: defaultPage;
 		},
 		getCurrentPathname: function(evt) { // gives access to current page
 			var urlObject = $.mobile.path.parseUrl(evt.currentTarget.URL);
 			return !!urlObject.filename
 					? urlObject.filename
-					: 'index.html';
+					: defaultPage;
 		},
 		getCurrentObjectPath: function(evt) {
 			return routeHelper.getObjectPath(routeHelper.getCurrentPathname(evt));
@@ -31,10 +31,9 @@ var Router = function() {
 			return pathname.split('.')[0];
 		}
 	};
-	this.onSwipeLeftHandler = function(callbacks) {
-		console.log('swipeleft-handler added.');
+	this.onSwipeHandler = function(callbacks) {
 		return function(evt) {
-			console.log('swipeleft-event fired.');
+			console.log('swipe-event fired.');
 			var objectPath = routeHelper.getCurrentObjectPath(evt);
 			console.log(objectPath);
 			if(callbacks[objectPath]) {
@@ -43,7 +42,6 @@ var Router = function() {
 		}
 	}
 	this.onScrollStopHandler = function(callbacks) {
-		console.log('scrollstop-handler added.');
 		return function(evt) {
 			console.log('scrollstop-event fired.');
 			var objectPath = routeHelper.getCurrentObjectPath(evt);
@@ -54,7 +52,6 @@ var Router = function() {
 		}
 	}
 	this.onPCBeforeLoadHandler = function(callbacks) {
-		console.log('pagecontainerbeforeload-handler added.');
 		return function(evt, ui) {
 			console.log('pagecontainerbeforeload-event fired.');
 			var objectPath = routeHelper.getTargetObjectPath(ui);
@@ -64,7 +61,6 @@ var Router = function() {
 		};
 	}
 	this.onPCShowHandler = function(callbacks) {
-		console.log('pagecontainershow-handler added.');
 		return function(evt, ui) {
 			console.log('pagecontainershow-event fired.');
 			var objectPath = routeHelper.getCurrentObjectPath(evt);

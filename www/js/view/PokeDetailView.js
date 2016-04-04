@@ -18,13 +18,18 @@ var PokeDetailView = function(containerSelector) {
 		var container = $(self.containerSelector);
 		container.empty();
 		container.append(helper.createErrorNode({ message: errorMessage }));
-		if(cb) { cb(); }
 	};
 	this.setPokemon = function(pokemon, cb) {
 		var container = $(self.containerSelector);
 		container.empty();
-		var node = helper.createPokemonNode(pokemon);
+		var node = {}
+		try {
+			node = helper.createPokemonNode(pokemon);
+		}
+		catch (err){
+			console.error(err);
+			node = createErrorNode(new Error('pokemon could no be retrieved'));
+		}
 		container.append(node);
-		if(cb) { cb(); }
 	};
 }

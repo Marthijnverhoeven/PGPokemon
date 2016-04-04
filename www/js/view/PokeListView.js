@@ -2,12 +2,12 @@ var PokeListView = function(containerSelector, storage) {
 	var self = this;
 	var helper = {
 		createPokemonNode: function(pokemon) {
-			return $('<li>').append($('<a>', {
-				href: self.config.viewUrl,
-				title: "dotaa"
-			}).html(pokemon.name || "Nameless pokemon :c")).on('click', function(evt) {
-				self.storage.pokedexClick = pokemon.url;
-			});
+			return $('<li>')
+				.append($('<a>', { href: self.config.viewUrl })
+					.html(pokemon.name || "Nameless pokemon :c")
+					.on('click', function(evt) { 
+						self.storage.pokedexClick = pokemon.url;
+					}));
 		},
 		createErrorNode: function(error) {
 			return $('<li>').html(error.message || "internal error");
@@ -31,13 +31,18 @@ var PokeListView = function(containerSelector, storage) {
 		var container = $(self.containerSelector);
 		container.empty();
 		container.append(helper.createErrorNode({ message: errorMessage }));
-		container.listview('refresh');
+		container.filterable().filterable('refresh');
 	};
 	this.setPokemon = function(pokeList) {
 		var container = $(self.containerSelector);
 		container.empty();
 		addMultiplePokemon(container, pokeList);
-		container.listview('refresh');
+		container.filterable().filterable('refresh');
+	};
+	this.appendPokemon = function(pokeData) {
+		var container = $(self.containerSelector);
+		addMultiplePokemon(container, pokeData);
+		container.filterable().filterable('refresh');
 	};
 	this.onScrollStopHandler = function(callback) { 
 		var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
@@ -52,15 +57,4 @@ var PokeListView = function(containerSelector, storage) {
 			callback();
 		}
 	}
-	this.appendPokemon = function(pokeData) {
-		var container = $(self.containerSelector);
-		addMultiplePokemon(container, pokeData);
-		container.listview('refresh');
-		// if (Array.isArray(pokeData)) {
-		// 	// array of pokemon
-		// }
-		// else {
-		// 	// single pokemon
-		// }
-	};
 };

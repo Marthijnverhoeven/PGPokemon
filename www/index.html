@@ -53,16 +53,17 @@
 						</ul>
 					</div>
 					<div id="pokedex" class="ui-body ui-body-a">
-						<ul data-role="listview" data-inset="true" id="pokedex-container">
+						<form class="ui-filterable">
+						    <input id="pokedex-input" data-type="search">
+						</form>
+						<ul data-role="listview" data-inset="true" data-filter="true" id="pokedex-container" data-input="#pokedex-input">
 						</ul>
 					</div>
-					<div id="mypokemon" class="ui-body ui-body-a">
-						<ul data-role="listview" data-inset="true" id="my-pokemon-container">
-							<li><a href="#">Suicune</a></li>
-							<li><a href="#">Raikou</a></li>
-							<li><a href="#">Entei</a></li>
-							<li><a href="#">Ho-Oh</a></li>
-							<li><a href="#">Arceus</a></li>
+					<div id="mypokemon" class="ui-body ui-body-a">						
+						<form class="ui-filterable">
+						    <input id="my-pokemon-input" data-type="search">
+						</form>
+						<ul data-role="listview" data-inset="true" data-filter="true" id="my-pokemon-container" data-input="#my-pokemon-input">
 						</ul>
 					</div>
 					<div id="nearby">
@@ -102,6 +103,7 @@
 		<script type="text/javascript" src="js/view/PokeDetailView.js"></script>
 		<script type="text/javascript" src="js/view/SettingsView.js"></script>
 		<script type="text/javascript" src="js/view/NearbyPokemonView.js"></script>
+		<script type="text/javascript" src="js/view/CaughtPokemonView.js"></script>
 		<!-- js/lib -->
 		<script type="text/javascript" src="js/lib/config.js"></script>
 		<script type="text/javascript" src="js/lib/PGPokemon.js"></script>
