@@ -22,13 +22,24 @@
 	<preference name="android-installLocation" value="auto"/>
 
 	<plugin name="org.apache.cordova.splashscreen"/>
+	<plugin name="org.apache.cordova.device-motion" />
 	<plugin name="org.apache.cordova.geolocation"/>
-	<!--<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-	<feature name="http://api.phonegap.com/1.0/geolocation"/>
-	<!--android:ACCESS_COARSE_LOCATION
-	android:ACCESS_FINE_LOCATION
-	android:ACCESS_LOCATION_EXTRA_COMMANDS-->
+	<!--<feature name="http://api.phonegap.com/1.0/geolocation"/>-->
+	
+	<!--<plugin name="org.apache.cordova.device-orientation" spec="0.3.1" source="pgb" />
+	<plugin name="org.apache.cordova.device-motion" spec="0.1.0" source="pgb" />-->
+	<!--<plugin name="org.apache.cordova.device-orientation" />-->
+	
+	
+	<!--<feature name="http://api.phonegap.com/1.0/accelerometer"/>-->
+	<!--<feature name="Accelerometer">
+		<param name="android-package" value="org.apache.cordova.devicemotion.AccelListener" />
+		<param name="ios-package" value="CDVAccelerometer" />
+	</feature>
+	<plugin name="cordova-plugin-device-motion" />
+	<plugin name="Accelerometer" value="org.apache.cordova.AccelListener" />
+	<plugin name="Accelerometer" value="org.apache.cordova.devicemotion.AccelListener" />
+	<plugin name="Accelerometer" value="CDVAccelerometer" />-->
 
 	<preference name="SplashScreen" value="splash"/>
 	<preference name="ShowSplashScreen" value="true"/>
