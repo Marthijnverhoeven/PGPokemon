@@ -15,44 +15,44 @@ var MyApp = function(config) {
 	var geoLocation = new GeoLocation(self.config.plugins.geolocation, self.config.geolocation);
 	
 	// DAL
-	// var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
-	var pokeApi = new PokeApi(self.config.pokeApi, function(ajaxParams) {
-		console.log('ajax call started');
-		console.log(ajaxParams);
-		return $.Deferred(function (defer){
-			setTimeout(function() {
-				if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/1')) {
-					console.log('pokedetail');
-					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/1', id: 1, name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
-				}
-				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/2')) {
-					console.log('pokedetail');
-					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/2', id: 2, name: "charredmander", sprites: { front_default: "http://www.savethesalamanders.com/uploads/4/9/2/7/4927660/5274618.jpg?499" } });
-				}
-				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/3')) {
-					console.log('pokedetail');
-					defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/3', id: 3, name: "warturtle", sprites: { front_default: "http://www.gannett-cdn.com/-mm-/59788d05a55862b70391a02d6ac8eb19fd05eb62/c=67-0-1128-796&r=x404&c=534x401/local/-/media/2015/06/26/AsburyPark/B9317849191Z.1_20150626070432_000_G1DB5V4P8.1-0.jpg" } });
-				}
-				else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon')) {
-					console.log('pokelist');
-					var data = { results: (function(){
-						var arr = [];
-						arr.push({ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" });
-						arr.push({ name: "charredmander", url: "http://pokeapi.co/api/v2/pokemon/2" });
-						arr.push({ name: "warturtle", url: "http://pokeapi.co/api/v2/pokemon/3" });
-						return arr;
-					}())};
-					// data.next = 'http://pokeapi.co/api/v2/pokemon?';
-					data.count = 3;
-					defer.resolve(data);
-				}
-				else {
-					console.error(new Error('lmao what the fuck are you doing!'));
-					defer.reject({ status: 500, statusText: "500 Internal Server Error" });
-				}
-			}, 1000)
-		}).promise();
-	});
+	var pokeApi = new PokeApi(self.config.pokeApi, $.ajax);
+	// var pokeApi = new PokeApi(self.config.pokeApi, function(ajaxParams) {
+	// 	console.log('ajax call started');
+	// 	console.log(ajaxParams);
+	// 	return $.Deferred(function (defer){
+	// 		setTimeout(function() {
+	// 			if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/1')) {
+	// 				console.log('pokedetail');
+	// 				defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/1', id: 1, name: "bobbelsaur", sprites: { front_default: "http://img12.deviantart.net/571d/i/2013/157/9/5/bobbelur_by_isa_san-dy6g8h.jpg" } });
+	// 			}
+	// 			else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/2')) {
+	// 				console.log('pokedetail');
+	// 				defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/2', id: 2, name: "charredmander", sprites: { front_default: "http://www.savethesalamanders.com/uploads/4/9/2/7/4927660/5274618.jpg?499" } });
+	// 			}
+	// 			else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon/3')) {
+	// 				console.log('pokedetail');
+	// 				defer.resolve({ url: 'http://pokeapi.co/api/v2/pokemon/3', id: 3, name: "warturtle", sprites: { front_default: "http://www.gannett-cdn.com/-mm-/59788d05a55862b70391a02d6ac8eb19fd05eb62/c=67-0-1128-796&r=x404&c=534x401/local/-/media/2015/06/26/AsburyPark/B9317849191Z.1_20150626070432_000_G1DB5V4P8.1-0.jpg" } });
+	// 			}
+	// 			else if(ajaxParams.url.startsWith('http://pokeapi.co/api/v2/pokemon')) {
+	// 				console.log('pokelist');
+	// 				var data = { results: (function(){
+	// 					var arr = [];
+	// 					arr.push({ name: "bobbelsaur", url: "http://pokeapi.co/api/v2/pokemon/1" });
+	// 					arr.push({ name: "charredmander", url: "http://pokeapi.co/api/v2/pokemon/2" });
+	// 					arr.push({ name: "warturtle", url: "http://pokeapi.co/api/v2/pokemon/3" });
+	// 					return arr;
+	// 				}())};
+	// 				// data.next = 'http://pokeapi.co/api/v2/pokemon?';
+	// 				data.count = 3;
+	// 				defer.resolve(data);
+	// 			}
+	// 			else {
+	// 				console.error(new Error('lmao what the fuck are you doing!'));
+	// 				defer.reject({ status: 500, statusText: "500 Internal Server Error" });
+	// 			}
+	// 		}, 1000)
+	// 	}).promise();
+	// });
 	var pokemonDatabase = new PokemonDatabase(self.config.database);
 	var pokemonRepository = new PokemonRepository(pokemonDatabase);
 	
@@ -67,6 +67,8 @@ var MyApp = function(config) {
 	this.onDeviceReady = function() {
 		console.log('deviceready-event fired.');
 		self.bindJQueryMobileEvents();
+		
+		console.time('logme');
 		
 		// pokelist init
 		themeManager.loadTheme();
@@ -136,6 +138,7 @@ var MyApp = function(config) {
 		// }).fail(function(err) {
 		// 	console.error(err);
 		// });
+		console.timeEnd('logme');
 	}
 	this.bindJQueryMobileEvents = function() {
 		$(document).on('swipeleft', router.onSwipeHandler(self.onSwipeLeft));
