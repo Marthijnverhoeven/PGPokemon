@@ -37,7 +37,7 @@ var NearbyPokemonView = function(nearbyPokemonCS) {
 	var calcCacheDistance = function(pos, cache) {
 		console.log(arguments);
 		cache.catchable = true;
-		var distance = 0.01;
+		var distance = 1; // = ??? meter
 		var sortedLong = getSorted(pos.coords.longitude, cache.coords.long);
 		var sortedLat = getSorted(pos.coords.latitude, cache.coords.lat); 
 		if(sortedLat.max - sortedLat.min > distance || sortedLong.max - sortedLong.min > distance) {
