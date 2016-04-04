@@ -26,7 +26,6 @@ var PokemonRepository = function(db) {
 		}
 	}
 	this.database = db;
-	this.config = config;
 	this.createSingle = function(pokemon) {
 		return $.Deferred(function(defer) {
 			dbTransact(function(tx) {

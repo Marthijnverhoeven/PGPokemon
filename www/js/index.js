@@ -20,6 +20,7 @@ var app = {
 	initialize: function(){
 		var self = this;
 		document.addEventListener('deviceready', function(evt) {
+			console.log(self.config);
 			new MyApp(self.config).onDeviceReady();
 		});
 	},
