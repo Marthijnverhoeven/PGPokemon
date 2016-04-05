@@ -90,6 +90,7 @@
 	<gap:splash src="res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
 
 	<access origin="*"/>
+	<access origin="http://*" launch-external="yes"/>
 	<access origin="geo:*" launch-external="yes" />
 	<plugin name="cordova-plugin-whitelist" version="1"/>
 	<allow-intent href="http://*/*"/>
