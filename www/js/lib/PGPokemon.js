@@ -94,7 +94,7 @@ var MyApp = function(config) {
 				listPromise = pokeApi.pokemon.readNext(data);
 			}).fail(function(err) {
 				console.error(err);
-				pokeListView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled.');
+				pokeListView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :97');
 				listPromise = null;
 			}).always(function() {
 				hideLoader();
@@ -105,13 +105,13 @@ var MyApp = function(config) {
 			// alert('No accelerometer available,\n' +
 			// 	'This means that the nearby pokemon feature will be disabled.\n' +
 			// 	'Please restart the app with a accelerometer-mounted device.');
-			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an accelerometer-mounted device.'); 
+			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an accelerometer-mounted device. CODE: :108'); 
 		}
 		else if(!getNavGeoLocation()) {
 			// alert('No location available,\n' +
 			// 	'This means that the nearby pokemon feature will be disabled.\n' +
 			// 	'Please restart the app with a gps-mounted device.');
-			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an gps-mounted device.');
+			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an gps-mounted device. CODE: :114');
 		}
 		else {
 			var countPromise = pokeApi.pokemon.count();
@@ -121,11 +121,11 @@ var MyApp = function(config) {
 					cacheManager.initialize(pos, count);
 				}).fail(function(err) {
 					console.error(err);
-					nearbyPokemonView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled.');
+					nearbyPokemonView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :124');
 				});
 			}, function(err) {
 				console.error(err);
-				nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled.');
+				nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :128');
 			});
 			cacheManager.onInitialization(function(caches) {
 				var cacheLength = Object.keys(caches).length; 
@@ -145,7 +145,7 @@ var MyApp = function(config) {
 								});
 							}, function(err) {
 								console.error(err);
-								nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled.');
+								nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :148');
 							});
 						}
 					}).fail(function(err) {
@@ -160,7 +160,7 @@ var MyApp = function(config) {
 			caughtPokemonView.setPokemon(results.rows);
 		}).fail(function(err) {
 			console.error(err);
-			caughtPokemonView.setError('Feature disabled, no information could be retrieved, please try again later.');
+			caughtPokemonView.setError('Feature disabled, no information could be retrieved, please try again later. CODE: :163');
 		});
 	}
 	this.bindJQueryMobileEvents = function() {
