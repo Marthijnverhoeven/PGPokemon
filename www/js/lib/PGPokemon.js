@@ -77,7 +77,7 @@ var MyApp = function(config) {
 	// VIEW
 	var pokeDetailView = new PokeDetailView(self.config.containerSelectors.pokedexdetailContainerSelector);
 	var pokeListView = new PokeListView(self.config.containerSelectors.pokedexlistContainer, self.config.storage);
-	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.storage);
+	var settingsView = new SettingsView(self.config.containerSelectors.settingCacheRadius, self.config.containerSelectors.settingCacheCount, self.config.containerSelectors.cacheReset, self.config.storage);
 	var nearbyPokemonView = new NearbyPokemonView(self.config.containerSelectors.nearbyPokemon);
 	var caughtPokemonView = new CaughtPokemonView(self.config.containerSelectors.caughtPokemon, self.config.storage);
 	var catchPokemonView = new CatchPokemonView(self.config.containerSelectors.catchPokemon);
