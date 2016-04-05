@@ -284,7 +284,7 @@ var MyApp = function(config) {
 			}, function(evt) {
 				console.log('reset');
 				geoLocation.getCurrentLocation(function(pos) {
-					cacheManager.resetCaches(pos, count); // reset cache
+					cacheManager.resetCaches(pos, pokeCount); // reset cache
 					var caches = cacheManager.getCaches();
 					var cacheLength = Object.keys(caches).length; 
 					var pokemon = [];
