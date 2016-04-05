@@ -6,9 +6,8 @@ var MyApp = function(config) {
 	var detailPromise = null;
 	var listPromise = null;
 	var currentPokemonDetail = null;
-	var pokeCount = null;
-	var countPromise = null;
 	var currentWatchId = null;
+	var pokeCount = 721;
 	var getNavGeoLocation = function() {
 		return navigator.geolocation;
 	}
@@ -99,11 +98,6 @@ var MyApp = function(config) {
 				listPromise = null;
 			});
 		}
-		// pokecount init
-		countPromise = pokeApi.pokemon.count();
-		countPromise.done(function(count) {
-			pokeCount = count;
-		});
 		// nearby pokemon init
 		if(!getNavAccelerometer()) {
 			// alert('No accelerometer available,\n' +
@@ -120,12 +114,7 @@ var MyApp = function(config) {
 		else {
 			
 			geoLocation.getCurrentLocation(function(pos) {
-				countPromise.done(function(count) {
-					cacheManager.initialize(pos, count);
-				}).fail(function(err) {
-					console.error(err);
-					nearbyPokemonView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :127');
-				});
+				cacheManager.initialize(pos, pokeCount);
 			}, function(err) {
 				console.error(err);
 				nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :131');
