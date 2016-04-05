@@ -121,3 +121,109 @@ h1 {
 .loader {
 	height: 40px;
 }
+
+.poke-type {
+	width: 95px;
+    height: 35px;
+	background-size: 400% 500%;
+}
+
+.poke-type.normal {
+	background-image: url(../img/types.png);
+	background-position: 0 0;
+}
+
+.poke-type.fighting {
+    background-image: url(../img/types.png);
+	background-position: 0 -35px;
+}
+
+.poke-type.flying {
+    background-image: url(../img/types.png);
+	background-position: 0 -70px;
+}
+
+.poke-type.poison {
+    background-image: url(../img/types.png);
+	background-position: 0 -105px;
+}
+
+.poke-type.ground {
+    background-image: url(../img/types.png);
+	background-position: 0 -140px;
+}
+
+.poke-type.rock {
+    background-image: url(../img/types.png);
+	background-position: -95px 0;
+}
+
+.poke-type.bug {
+    background-image: url(../img/types.png);
+	background-position: -95px -35px;
+}
+
+.poke-type.ghost {
+    background-image: url(../img/types.png);
+	background-position: -95px -70px;
+}
+
+.poke-type.steel {
+    background-image: url(../img/types.png);
+	background-position: -95px -105px;
+}
+
+.poke-type.fire {
+    background-image: url(../img/types.png);
+	background-position: -95px -140px;
+}
+
+.poke-type.water {
+    background-image: url(../img/types.png);
+	background-position: -190px 0;
+}
+
+.poke-type.grass {
+    background-image: url(../img/types.png);
+	background-position: -190px -35px;
+}
+
+.poke-type.electric {
+    background-image: url(../img/types.png);
+	background-position: -190px -70px;
+}
+
+.poke-type.psychic {
+    background-image: url(../img/types.png);
+	background-position: -190px -105px;
+}
+
+.poke-type.ice {
+    background-image: url(../img/types.png);
+	background-position: -190px -140px;
+}
+
+.poke-type.dragon {
+    background-image: url(../img/types.png);
+	background-position: -285px 0;
+}
+
+.poke-type.dark {
+    background-image: url(../img/types.png);
+	background-position: -285px -35px;
+}
+
+.poke-type.fairy {
+    background-image: url(../img/types.png);
+	background-position: -285px -70px;
+}
+
+.poke-type.unknown {
+    background-image: url(../img/types.png);
+	background-position: -285px -105px;
+}
+
+.poke-type.shadow {
+    background-image: url(../img/types.png);
+	background-position: -285px -140px;
+}
