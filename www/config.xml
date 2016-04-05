@@ -21,10 +21,16 @@
 	<preference name="android-minSdkVersion" value="14"/>
 	<preference name="android-installLocation" value="auto"/>
 
-	<plugin name="org.apache.cordova.splashscreen"/>
+	<!--<plugin name="org.apache.cordova.splashscreen"/>
 	<plugin name="org.apache.cordova.device-motion" />
 	<plugin name="org.apache.cordova.device-orientation" />
-	<plugin name="org.apache.cordova.geolocation"/>
+	<plugin name="org.apache.cordova.geolocation"/>-->
+	
+	<plugin name="cordova-plugin-whitelist" spec="1.2.1" />
+	<plugin name="org.apache.cordova.device-motion" spec="1.2.0" />
+	<plugin name="org.apache.cordova.geolocation" spec="2.1.0" />
+	<plugin name="org.apache.cordova.splashscreen" spec="3.2.1" />
+	
 	<!--<feature name="http://api.phonegap.com/1.0/geolocation"/>-->
 	
 	<!--<plugin name="org.apache.cordova.device-orientation" spec="0.3.1" source="pgb" />
