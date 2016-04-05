@@ -89,15 +89,13 @@
 
 	<gap:splash src="res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
 
-	<access origin="*"/>
-	<access origin="http://*" launch-external="yes"/>
+	<access origin="http://pokeapi.co/*"/>
+	<access origin="http://www.pokemon.com/us/pokedex/*" launch-external="yes"/>
 	<access origin="geo:*" launch-external="yes" />
 	<plugin name="cordova-plugin-whitelist" version="1"/>
-	<allow-intent href="http://*/*"/>
-	<allow-intent href="https://*/*"/>
-	<allow-intent href="tel:*"/>
+	<allow-intent href="http://*"/>
+	<allow-intent href="https://*"/>
 	<allow-intent href="sms:*"/>
-	<allow-intent href="mailto:*"/>
 	<allow-intent href="geo:*"/>
 	<platform name="android">
 		<allow-intent href="market:*"/>

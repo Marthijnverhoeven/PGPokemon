@@ -8,9 +8,6 @@ var PokeListView = function(containerSelector, storage) {
 					.on('click', function(evt) { 
 						self.storage.pokedexClick = pokemon.url;
 					}));
-		},
-		createErrorNode: function(error) {
-			return $('<li>').html(error.message || "internal error");
 		}
 	};
 	var addSinglePokemon = function(container, pokemon) {
@@ -27,11 +24,14 @@ var PokeListView = function(containerSelector, storage) {
 	this.config = {
 		viewUrl: "pokedetails.html"
 	};
-	this.setError = function(errorMessage) {
+	this.setError = function(message) {
+		var html = '<li>' +
+				`<p class="my-wrap">${message}</p>` +
+			'</li>';
 		var container = $(self.containerSelector);
 		container.empty();
-		container.append(helper.createErrorNode({ message: errorMessage }));
-		container.filterable().filterable('refresh');
+		container.append($(html));
+		container.filterable().filterable('refresh')
 	};
 	this.setPokemon = function(pokeList) {
 		var container = $(self.containerSelector);

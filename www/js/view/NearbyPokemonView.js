@@ -57,8 +57,13 @@ var NearbyPokemonView = function(nearbyPokemonCS) {
 		appendCaches(container, pokemons, caches, callback);
 		container.listview('refresh');
 	}
-	this.displayCatchDialog = function() {
-		// $('#popupCloseRight').popup().popup('open');
-		$(":mobile-pagecontainer").pagecontainer('change', '#popupCloseRight');
+	this.setError = function(message) {
+		var html = '<li>' +
+				`<p class="my-wrap">${message}</p>` +
+			'</li>';
+		var container = $(self.nearbyPokemonCS);
+		container.empty();
+		container.append($(html));
+		container.listview('refresh');
 	}
 }

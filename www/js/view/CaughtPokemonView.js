@@ -11,9 +11,6 @@ var CaughtPokemonView = function(caughtPokemonCS, storage) {
 					.on('click', function(evt) { 
 						self.storage.pokedexClick = pokemon.url;
 					}));
-		},
-		createErrorNode: function(error) {
-			return $('<li>').html(error.message || "internal error");
 		}
 	};
 	var addSinglePokemon = function(container, pokemon) {
@@ -25,11 +22,19 @@ var CaughtPokemonView = function(caughtPokemonCS, storage) {
 		for(var key of keys) {			
 			addSinglePokemon(container, pokemons[key]);
 		}
+		console.log('i am here' + keys.length);
+		if(!keys.length) {
+			console.log('erer');
+			self.setError('No pokemon caught yet');
+		}
 	};
-	this.setError = function(errorMessage) {
+	this.setError = function(message) {
+		var html = '<li>' +
+				`<p class="my-wrap">${message}</p>` +
+			'</li>';
 		var container = $(self.caughtPokemonCS);
 		container.empty();
-		container.append(helper.createErrorNode({ message: errorMessage }));
+		container.append($(html));
 		container.filterable().filterable('refresh');
 	};
 	this.setPokemon = function(pokeList) {
@@ -40,6 +45,7 @@ var CaughtPokemonView = function(caughtPokemonCS, storage) {
 	};
 	this.appendPokemon = function(pokemon) {
 		var container = $(self.caughtPokemonCS);
+		container.find('.my-wrap').parent().remove();
 		addSinglePokemon(container, pokemon);
 		container.filterable().filterable('refresh');
 	};

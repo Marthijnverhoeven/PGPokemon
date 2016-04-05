@@ -122,6 +122,10 @@ h1 {
 	height: 40px;
 }
 
+.my-wrap {
+    white-space: normal !important;
+}
+
 .poke-type {
 	width: 95px;
     height: 35px;
