@@ -21,12 +21,35 @@ var CacheManager = function(config) {
         	random++;
         }
 		acc = acc + radius;
-		var factor = (acc < 100) ? 0.1 : 1;
+		var factor = (acc < 100) ? 0.01 : 0.1;
 		var modifier = factor * random;
 		return {
 			lat: lat + modifier,
 			long: long + modifier
 		} 
+	}
+	// http://stackoverflow.com/questions/31192451/generate-random-geo-coordinates-within-specific-radius-from-seed-point
+	var calculateRandomLocationSO = function (long, lat, acc, radius) {
+		var y0 = lat;
+		var x0 = long;
+		var rd = radius / 111300; //about 111300 meters in one degree
+
+		var u = Math.random();
+		var v = Math.random();
+
+		// ???	
+		var w = rd * Math.sqrt(u);
+		var t = 2 * Math.PI * v;
+		var x = w * Math.cos(t);
+		var y = w * Math.sin(t);
+
+		var newlat = y + y0;
+		var newlon = x + x0;
+
+		return {
+			'lat': newlat.toFixed(5),
+			'long': newlon.toFixed(5)
+		};
 	}
 	var randomId = function(pokeCount) {
 		return Math.floor(Math.random() * pokeCount) + 1 
@@ -36,13 +59,16 @@ var CacheManager = function(config) {
 			callback(self.getCaches());
 		}
 	}
-	this.initialize = function(pos, pokeCount) {
+	var appendCaches = function(pos, pokeCount) {
 		for(var i = 0; i < self.cacheCount(); i++) {
 			caches.push({
-				coords: calculateRandomLocation(pos.coords.longitude, pos.coords.latitude, pos.coords.accuracy, self.cacheRadius()),
+				coords: calculateRandomLocationSO(pos.coords.longitude, pos.coords.latitude, pos.coords.accuracy, self.cacheRadius()),
 				pokeId: randomId(pokeCount)
 			});
 		}
+	}
+	this.initialize = function(pos, pokeCount) {
+		appendCaches(pos, pokeCount);
 		initialized();
 	}
 	// Returns all currently calculated caches.
@@ -51,8 +77,8 @@ var CacheManager = function(config) {
 	};
 	// Completely resets caches, including: location, count and radius based on settings or RNG.
 	this.resetCaches = function(pos, pokeCount) {
-		cache = [];
-		self.initialize(pos, pokeCount);
+		caches = [];
+		appendCaches(pos, pokeCount);
 	};
 	// --- CacheSettings
 	// Returns stored settings by key or default as defined in config.

@@ -11,7 +11,7 @@ var PokeDetailView = function(containerSelector) {
 			var self = this;
 			var typeHTML = '';
 			for(var i = 0; i < types.length; i++) {
-				typeHTML += `<div class="ui-block-${self.alpha[i]}"><div class="poke-type ${types[i].type}"></div></div>`;
+				typeHTML += `<div class="ui-block-${self.alpha[i]}"><div class="poke-type ${types[i].type.name}"></div></div>`;
 			}
 			return `<div class="ui-body ui-body-a ui-grid-a ui-corner-all">` + 
 					typeHTML + 
@@ -21,7 +21,6 @@ var PokeDetailView = function(containerSelector) {
 			var self = this;
 			var typeAppender = self.createTypeHTML(pokemon.types);
 			var linkAppender = self.createLinkHTML(pokemon.id);
-			console.log(typeAppender);
 			var html = `<div class="ui-body ui-body-a">` +
 					`<h2>${pokemon.name}</h2>` +
 					`<div class="ui-body ui-body-a ui-corner-all">` +
@@ -32,15 +31,16 @@ var PokeDetailView = function(containerSelector) {
 				`</div>`;
 			return $(html);
 		},
-		createErrorNode: function() {
-			
+		createErrorNode: function(message) {
+			var html = `<p class="my-wrap">${message}</p>`;
+			return $(self.nearbyPokemonCS);
 		}
 	};
 	this.containerSelector = containerSelector;
 	this.setError = function(errorMessage, cb) {
 		var container = $(self.containerSelector);
 		container.empty();
-		container.append(helper.createErrorNode({ message: errorMessage }));
+		container.append(helper.createErrorNode(errorMessage));
 	};
 	this.setPokemon = function(pokemon, cb) {
 		var container = $(self.containerSelector);

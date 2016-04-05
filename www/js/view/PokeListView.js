@@ -3,7 +3,7 @@ var PokeListView = function(containerSelector, storage) {
 	var helper = {
 		createPokemonNode: function(pokemon) {
 			return $('<li>')
-				.append($('<a>', { href: self.config.viewUrl })
+				.append($(`<a data-transition="slidedown" href="${self.config.viewUrl}">`)
 					.html(pokemon.name || "Nameless pokemon :c")
 					.on('click', function(evt) { 
 						self.storage.pokedexClick = pokemon.url;

@@ -72,7 +72,8 @@ var app = {
 			themeSettings: '#theme-setting-container',
 			caughtPokemon: '#my-pokemon-container',
 			nearbyPokemon: '#nearby-pokemon-container',
-			catchPokemon: '#catch-pokemon-container'
+			catchPokemon: '#catch-pokemon-container',
+			cacheReset: '#cache-reset'
 		},
 		geolocation: {
 			maximumAge: 3000, // Maximum age (in ms) of the retrieved location.

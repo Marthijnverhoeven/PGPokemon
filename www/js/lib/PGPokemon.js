@@ -7,6 +7,8 @@ var MyApp = function(config) {
 	var listPromise = null;
 	var currentPokemonDetail = null;
 	var pokeCount = null;
+	var countPromise = null;
+	var currentWatchId = null;
 	var getNavGeoLocation = function() {
 		return navigator.geolocation;
 	}
@@ -88,44 +90,45 @@ var MyApp = function(config) {
 		themeManager.loadTheme();
 		listPromise = pokeApi.pokemon.read({});
 		if(listPromise) {
-			displayLoader();
 			listPromise.done(function(data) {
 				pokeListView.setPokemon(data.results);
 				listPromise = pokeApi.pokemon.readNext(data);
 			}).fail(function(err) {
 				console.error(err);
-				pokeListView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :97');
+				pokeListView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :98');
 				listPromise = null;
-			}).always(function() {
-				hideLoader();
 			});
 		}
+		// pokecount init
+		countPromise = pokeApi.pokemon.count();
+		countPromise.done(function(count) {
+			pokeCount = count;
+		});
 		// nearby pokemon init
 		if(!getNavAccelerometer()) {
 			// alert('No accelerometer available,\n' +
 			// 	'This means that the nearby pokemon feature will be disabled.\n' +
 			// 	'Please restart the app with a accelerometer-mounted device.');
-			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an accelerometer-mounted device. CODE: :108'); 
+			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an accelerometer-mounted device. CODE: :112'); 
 		}
 		else if(!getNavGeoLocation()) {
 			// alert('No location available,\n' +
 			// 	'This means that the nearby pokemon feature will be disabled.\n' +
 			// 	'Please restart the app with a gps-mounted device.');
-			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an gps-mounted device. CODE: :114');
+			nearbyPokemonView.setError('Feature disabled, no accelerometer available, please restart with an gps-mounted device. CODE: :118');
 		}
 		else {
-			var countPromise = pokeApi.pokemon.count();
+			
 			geoLocation.getCurrentLocation(function(pos) {
 				countPromise.done(function(count) {
-					pokeCount = count;
 					cacheManager.initialize(pos, count);
 				}).fail(function(err) {
 					console.error(err);
-					nearbyPokemonView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :124');
+					nearbyPokemonView.setError('Feature disabled, no information could be retrieved, please restart with internet services enabled. CODE: :127');
 				});
 			}, function(err) {
 				console.error(err);
-				nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :128');
+				nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :131');
 			});
 			cacheManager.onInitialization(function(caches) {
 				var cacheLength = Object.keys(caches).length; 
@@ -135,7 +138,7 @@ var MyApp = function(config) {
 					tempPromise.done(function(data) {
 						pokemon.push(data);
 						if(pokemon.length === cacheLength) {
-							geoLocation.watchLocation(function(pos) {
+							currentWatchId = geoLocation.watchLocation(function(pos) {
 								nearbyPokemonView.setCaches(pos, pokemon, caches, function(pokemon, cache) {
 									console.log('klik');
 									self.config.storage.catchPokemonClick = JSON.stringify({
@@ -145,7 +148,7 @@ var MyApp = function(config) {
 								});
 							}, function(err) {
 								console.error(err);
-								nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :148');
+								nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :151');
 							});
 						}
 					}).fail(function(err) {
@@ -160,7 +163,7 @@ var MyApp = function(config) {
 			caughtPokemonView.setPokemon(results.rows);
 		}).fail(function(err) {
 			console.error(err);
-			caughtPokemonView.setError('Feature disabled, no information could be retrieved, please try again later. CODE: :163');
+			caughtPokemonView.setError('Feature disabled, no information could be retrieved, please try again later. CODE: :166');
 		});
 	}
 	this.bindJQueryMobileEvents = function() {
@@ -182,7 +185,9 @@ var MyApp = function(config) {
 				detailPromise = pokeApi.pokemon.readById((currentPokemonDetail.id+1));
 				detailPromise.done(function() {
 					$(":mobile-pagecontainer").pagecontainer('change', 'pokedetails.html', {
-						allowSamePageTransition: true
+						allowSamePageTransition: true,
+						changeHash: false,
+						transition: 'slide'
 					});
 				}).fail(function() {
 					detailPromise = null;
@@ -200,7 +205,10 @@ var MyApp = function(config) {
 				detailPromise = pokeApi.pokemon.readById((currentPokemonDetail.id-1));
 				detailPromise.done(function() {
 					$(":mobile-pagecontainer").pagecontainer('change', 'pokedetails.html', {
-						allowSamePageTransition: true
+						allowSamePageTransition: true,
+						changeHash: false,
+						transition: 'slide',
+						reverse: true
 					});
 				}).fail(function() {
 					detailPromise = null;
@@ -241,7 +249,11 @@ var MyApp = function(config) {
 		"catch": function(){
 			console.log('showing catch');
 			if(!self.config.storage.catchPokemonClick) {
-				$(":mobile-pagecontainer").pagecontainer('change', 'index.html');
+				return $(":mobile-pagecontainer").pagecontainer('change', 'index.html', {
+					changeHash: false,
+					transition: 'flow',
+					reverse: true
+				});
 			}
 			accelerometerManager.checkForShaking(function(shakeData) {
 				var pokemon = JSON.parse(self.config.storage.catchPokemonClick);
@@ -280,6 +292,28 @@ var MyApp = function(config) {
 				cacheManager.cacheRadius(sender.val());
 			}, function(sender, evt) {
 				cacheManager.cacheCount(sender.val());
+			}, function(evt) {
+				geoLocation.getCurrentLocation(function(pos) {
+					cacheManager.resetCaches(pos, count); // reset cache
+					if(currentWatchId) { //  if watching
+						geoLocation.clearWatch(currentWatchId); // clear it, to prevent handler being fired
+						currentWatchId = geoLocation.watchLocation(function(pos) { // rewatch with new handler
+							nearbyPokemonView.setCaches(pos, pokemon, cacheManager.getCaches(), function(pokemon, cache) { // set view
+								console.log('klik');
+								self.config.storage.catchPokemonClick = JSON.stringify({ // onclick store pokemon data
+									name: pokemon.name,
+									url: pokemon.url
+								});
+							});
+						}, function(err) {
+							console.error(err);
+							nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :310');
+						});
+					}
+				}, function(err) {
+					console.error(err);
+					nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :315');
+				});
 			});
 			settingsView.setCacheValues(cacheManager.cacheRadius(), cacheManager.cacheCount());
 			settingsView.setRadioValues(themeManager.currentTheme());

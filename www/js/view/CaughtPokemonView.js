@@ -6,7 +6,7 @@ var CaughtPokemonView = function(caughtPokemonCS, storage) {
 	var helper = {
 		createPokemonNode: function(pokemon) {
 			return $('<li>')
-				.append($('<a>', { href: self.viewUrl, title: "dotaa" })
+				.append($(`<a data-transition="slidedown" href="${self.viewUrl}">`)
 					.html(pokemon.name || "Nameless pokemon :c")
 					.on('click', function(evt) { 
 						self.storage.pokedexClick = pokemon.url;
@@ -22,9 +22,7 @@ var CaughtPokemonView = function(caughtPokemonCS, storage) {
 		for(var key of keys) {			
 			addSinglePokemon(container, pokemons[key]);
 		}
-		console.log('i am here' + keys.length);
 		if(!keys.length) {
-			console.log('erer');
 			self.setError('No pokemon caught yet');
 		}
 	};

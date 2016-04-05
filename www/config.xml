@@ -1,8 +1,8 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.webs5.pgpokemon" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="nl.avans.mbd1.s2071434.s2080183" version="1.0.0">
 	<name>PGPokemon</name>
   <description>PGPokemon app using the pokeapi to retrieve data.</description>
-  <author email="fskarsod@avans.nl">fskarsod</author>
   <author email="mmamhver@avans.nl">mmamhver</author>
+  <author email="fskarsod@avans.nl">fskarsod</author>
   <content src="index.html"/>
   
   	<!-- ... preferences -->
