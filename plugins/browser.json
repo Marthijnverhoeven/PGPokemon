@@ -1,0 +1,27 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.webs5.pgpokemon"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "com.webs5.pgpokemon"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "com.webs5.pgpokemon"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.webs5.pgpokemon"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.webs5.pgpokemon"
+        }
+    },
+    "dependent_plugins": {}
+}

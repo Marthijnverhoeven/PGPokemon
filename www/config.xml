@@ -23,6 +23,7 @@
 
 	<plugin name="org.apache.cordova.splashscreen"/>
 	<plugin name="org.apache.cordova.device-motion" />
+	<plugin name="org.apache.cordova.device-orientation" />
 	<plugin name="org.apache.cordova.geolocation"/>
 	<!--<feature name="http://api.phonegap.com/1.0/geolocation"/>-->
 	
