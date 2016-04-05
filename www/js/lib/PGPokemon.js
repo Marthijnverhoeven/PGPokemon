@@ -293,21 +293,34 @@ var MyApp = function(config) {
 			}, function(sender, evt) {
 				cacheManager.cacheCount(sender.val());
 			}, function(evt) {
+				console.log('reset');
 				geoLocation.getCurrentLocation(function(pos) {
 					cacheManager.resetCaches(pos, count); // reset cache
-					if(currentWatchId) { //  if watching
-						geoLocation.clearWatch(currentWatchId); // clear it, to prevent handler being fired
-						currentWatchId = geoLocation.watchLocation(function(pos) { // rewatch with new handler
-							nearbyPokemonView.setCaches(pos, pokemon, cacheManager.getCaches(), function(pokemon, cache) { // set view
-								console.log('klik');
-								self.config.storage.catchPokemonClick = JSON.stringify({ // onclick store pokemon data
-									name: pokemon.name,
-									url: pokemon.url
+					var caches = cacheManager.getCaches();
+					var cacheLength = Object.keys(caches).length; 
+					var pokemon = [];
+					for(var key in caches) {
+						pokeApi.pokemon.readById(caches[key].pokeId).done(function(data) {
+							pokemon.push(data);
+							if(pokemon.length === cacheLength) { // at last promise
+								if(currentWatchId) { //  if watching
+									geoLocation.clearWatch(currentWatchId); // clear it, to prevent handler being fired
+								}
+								currentWatchId = geoLocation.watchLocation(function(pos) { // rewatch with new handler
+									nearbyPokemonView.setCaches(pos, pokemon, caches, function(pokemon, cache) { // set view
+										console.log('klik');
+										self.config.storage.catchPokemonClick = JSON.stringify({ // onclick store pokemon data
+											name: pokemon.name,
+											url: pokemon.url
+										});
+									});
+								}, function(err) {
+									console.error(err);
+									nearbyPokemonView.setError('Feature disabled, ' +
+										'no location services available, ' +
+										'please restart with location services enabled. CODE: :310');
 								});
-							});
-						}, function(err) {
-							console.error(err);
-							nearbyPokemonView.setError('Feature disabled, no location services available, please restart with location services enabled. CODE: :310');
+							}
 						});
 					}
 				}, function(err) {
