@@ -171,7 +171,7 @@ var MyApp = function(config) {
 		$(document).on('pagecontainershow', router.onPCShowHandler(self.onPCShow));
 		window.onerror = function(err) {
 			console.error(err);
-			// alert('An uncaught error occured');
+			alert(err);
 		};
 	}
 	this.onSwipeLeft = {
