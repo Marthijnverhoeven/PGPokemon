@@ -81,7 +81,8 @@ var app = {
 			enableHighAccuracy: true // Specifies to the device that the best accuraty possible should be used (rather than just a generic nearby location).
 		},
 		plugins: { },
-		storage: localStorage
+		storage: localStorage,
+		distanceToCatch: 100
 	}
 }
 

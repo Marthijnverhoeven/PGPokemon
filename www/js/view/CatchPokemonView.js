@@ -9,7 +9,7 @@ var CatchPokemonView = function(catchPokemonCS) {
 						`<h2>Stats</h2>` +
 					`</div>` +
 					`<div class="ui-grid-a ui-body-a">` +
-						`<strong class="ui-block-a">percentage</strong>` +
+						`<strong class="ui-block-a">Percentage</strong>` +
 						`<p class="ui-block-b">${shakeData.percentage}%</p>` +
 					`</div>` +
 					`<div class="ui-grid-a ui-body-a ui-corner-bot">` +
