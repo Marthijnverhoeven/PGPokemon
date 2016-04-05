@@ -27,10 +27,10 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self';
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' http://pokeapi.co data: gap: https://ssl.gstatic.com/;
 															connect-src 'self' http://pokeapi.co rippleapi.herokuapp.com;
-															img-src 'self' pokeapi.co *.tile.openstreetmap.org data:;
-															script-src 'self' debug2.phonegap.com pokeapi.co 'unsafe-inline';
+															img-src 'self' http://pokeapi.co *.tile.openstreetmap.org data:;
+															script-src 'self' debug2.phonegap.com http://pokeapi.co 'unsafe-inline';
 															style-src 'self' 'unsafe-inline';">
         <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
         <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -86,10 +86,6 @@
 						</ul>
 					</div>
 					<div id="nearby" class="ui-body ui-body-a">
-						<div data-role="popup" id="popupCloseRight" class="ui-body" style="max-width:280px">
-						    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-							<p>I have a close button at the top right corner with simple HTML markup.</p>
-						</div>
 						<ul data-role="listview" data-inset="false" id="nearby-pokemon-container">
 							<div class="ui-grid-b">
 								<div class="ui-block-a">
